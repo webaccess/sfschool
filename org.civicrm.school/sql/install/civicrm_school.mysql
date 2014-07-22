@@ -1,0 +1,33 @@
+CREATE TABLE `school_extended_care_source` (
+  `id` int(10) unsigned NOT NULL AUTO_INCREMENT COMMENT 'Default MySQL primary key',
+  `term` varchar(16) COLLATE utf8_unicode_ci DEFAULT 'Fall 2009',
+  `min_grade` int(10) unsigned DEFAULT '1',
+  `max_grade` int(10) unsigned DEFAULT '8',
+  `day_of_week` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `session` varchar(32) COLLATE utf8_unicode_ci DEFAULT 'First',
+  `name` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `instructor` varchar(64) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `fee_block` double DEFAULT '1',
+  `total_fee_block` double NOT NULL DEFAULT '0' COMMENT 'Total fee blocks for this class in this session',
+  `max_participants` int(10) unsigned DEFAULT '0',
+  `start_date` datetime DEFAULT NULL,
+  `end_date` datetime DEFAULT NULL,
+  `is_active` tinyint(4) DEFAULT '1' COMMENT 'Is this activity active?',
+  `url` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `location` varchar(255) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `additional_rows` int(11) NOT NULL DEFAULT '0',
+  `is_hidden` tinyint(4) NOT NULL DEFAULT '0',
+  `is_free_class` tinyint(4) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `INDEX_school_extended_care_source` (`term`,`day_of_week`,`session`,`is_active`,`name`)
+) ENGINE=InnoDB AUTO_INCREMENT=236 DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci
+
+
+SELECT @id := id FROM `civicrm_option_group` WHERE `name` = 'report_template'; 
+
+INSERT INTO `civicrm_option_value` (`option_group_id`, `label`, `value`, `name`, `is_active`, `description`) VALUES
+(@id, 'eConsent Report', 'school/eConsent', 'School_Report_Form_Econsent', 1, 'eConsent Details Report'),
+(@id, 'Extended Care Attendance Sheet', 'school/extended/attendance', 'School_Report_Form_Attendance', 1, 'Attendance Sheet for Extended Care'),
+(@id, 'Students in Extended Care Class', 'school/extended/roster', 'School_Report_Form_AttendeeInfo', 1, 'List of Students and Contact Information in a Class'),
+(@id, 'Class Roster', 'school/roster', 'School_Report_Form_Roster', 1, 'Class Roster'),
+(@id, 'Parent Teacher Conference', 'school/ptc', 'School_Report_Form_ParentTeacherConference', 1, 'Parent Teacher Conference');

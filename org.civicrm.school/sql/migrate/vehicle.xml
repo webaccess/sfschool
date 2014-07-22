@@ -1,0 +1,411 @@
+<CustomData>
+  <CustomGroups>
+      <CustomGroup>
+      <name>Vehicle_Use_Agreement</name>
+      <title>Vehicle Use Agreement</title>
+      <extends>Individual</extends> 
+      <extends_entity_column_value>:;:;:;Parent:;:;:;Staff:;:;:;</extends_entity_column_value>
+      <style>Tab</style>
+      <collapse_display>0</collapse_display>
+      <help_pre></help_pre>
+      <help_post></help_post>
+      <is_active>1</is_active>
+      <table_name>civicrm_value_vehicle_use_agreement</table_name>
+      <is_multiple>0</is_multiple>
+      <collapse_adv_display>0</collapse_adv_display>
+    </CustomGroup>
+  </CustomGroups>
+  <CustomFields>
+    <CustomField>
+      <label>Employee/Volunteer Name</label>
+      <data_type>String</data_type>
+      <html_type>Text</html_type>
+      <is_required>1</is_required>
+      <is_searchable>0</is_searchable>
+      <is_search_range>0</is_search_range>
+      <weight>1</weight>
+      <is_active>1</is_active>
+      <is_view>0</is_view>
+      <text_length>255</text_length>
+      <note_columns>60</note_columns>
+      <note_rows>4</note_rows>
+      <column_name>employee_volunteer_name</column_name>
+      <custom_group_name>Vehicle_Use_Agreement</custom_group_name>
+    </CustomField>
+    <CustomField>
+      <label>License Number</label>
+      <data_type>String</data_type>
+      <html_type>Text</html_type>
+      <is_required>1</is_required>
+      <is_searchable>0</is_searchable>
+      <is_search_range>0</is_search_range>
+      <weight>3</weight>
+      <is_active>1</is_active>
+      <is_view>0</is_view>
+      <text_length>255</text_length>
+      <note_columns>60</note_columns>
+      <note_rows>4</note_rows>
+      <column_name>license_number</column_name>
+      <custom_group_name>Vehicle_Use_Agreement</custom_group_name>
+    </CustomField> 
+    <CustomField>
+      <label>State Issued</label>
+      <data_type>String</data_type>
+      <html_type>Text</html_type>
+      <is_required>1</is_required>
+      <is_searchable>0</is_searchable>
+      <is_search_range>0</is_search_range>
+      <weight>4</weight>
+      <is_active>1</is_active>
+      <is_view>0</is_view>
+      <text_length>255</text_length>
+      <note_columns>60</note_columns>
+      <note_rows>4</note_rows>
+      <column_name>state_issued</column_name>
+      <custom_group_name>Vehicle_Use_Agreement</custom_group_name>
+    </CustomField>
+    <CustomField>
+      <label>Birth Date</label>
+      <data_type>Date</data_type>
+      <html_type>Select Date</html_type>
+      <is_required>1</is_required>
+      <is_searchable>0</is_searchable>
+      <is_search_range>0</is_search_range>
+      <weight>2</weight>
+      <is_active>1</is_active>
+      <is_view>0</is_view>
+      <text_length>255</text_length>
+      <date_format>mm/dd/yy</date_format>
+      <note_columns>60</note_columns>
+      <note_rows>4</note_rows>
+      <column_name>birth_date</column_name>
+      <custom_group_name>Vehicle_Use_Agreement</custom_group_name>
+    </CustomField>
+    <CustomField>
+      <label>Expiration Date</label>
+      <data_type>Date</data_type>
+      <html_type>Select Date</html_type>
+      <is_required>1</is_required>
+      <is_searchable>0</is_searchable>
+      <is_search_range>0</is_search_range>
+      <weight>5</weight>
+      <is_active>1</is_active>
+      <is_view>0</is_view>
+      <text_length>255</text_length>
+      <date_format>mm/dd/yy</date_format>
+      <note_columns>60</note_columns>
+      <note_rows>4</note_rows>
+      <column_name>expiration_date</column_name>
+      <custom_group_name>Vehicle_Use_Agreement</custom_group_name>
+    </CustomField>
+    <CustomField>
+      <label>Car Make/Color</label>
+      <data_type>String</data_type>
+      <html_type>Text</html_type>
+      <help_pre></help_pre>
+      <is_required>0</is_required>
+      <is_searchable>0</is_searchable>
+      <is_search_range>0</is_search_range>
+      <weight>6</weight>
+      <is_active>1</is_active>
+      <is_view>0</is_view>
+      <text_length>255</text_length>
+      <note_columns>60</note_columns>
+      <note_rows>4</note_rows>
+      <column_name>car_make_color</column_name>
+      <custom_group_name>Vehicle_Use_Agreement</custom_group_name>
+    </CustomField>
+    <CustomField>
+      <label>License Plate</label>
+      <data_type>String</data_type>
+      <html_type>Text</html_type>
+      <is_required>0</is_required>
+      <is_searchable>0</is_searchable>
+      <is_search_range>0</is_search_range>
+      <weight>9</weight>
+      <is_active>1</is_active>
+      <is_view>0</is_view>
+      <text_length>255</text_length>
+      <note_columns>60</note_columns>
+      <note_rows>4</note_rows>
+      <column_name>license_plate</column_name>
+      <custom_group_name>Vehicle_Use_Agreement</custom_group_name>
+    </CustomField>
+    <CustomField>
+      <label># of Seats Belts</label>
+      <data_type>Int</data_type>
+      <html_type>Text</html_type>
+      <is_required>0</is_required>
+      <is_searchable>0</is_searchable>
+      <is_search_range>0</is_search_range>
+      <weight>12</weight>
+      <is_active>1</is_active>
+      <is_view>0</is_view>
+      <text_length>255</text_length>
+      <note_columns>60</note_columns>
+      <note_rows>4</note_rows>
+      <column_name>no_of_seats_belts</column_name>
+      <custom_group_name>Vehicle_Use_Agreement</custom_group_name>
+    </CustomField>
+    <CustomField>
+      <label>Insurance Carrier Name</label>
+      <data_type>String</data_type>
+      <html_type>Text</html_type>
+      <is_required>0</is_required>
+      <is_searchable>0</is_searchable>
+      <is_search_range>0</is_search_range>
+      <weight>7</weight>
+      <is_active>1</is_active>
+      <is_view>0</is_view>
+      <text_length>255</text_length>
+      <note_columns>60</note_columns>
+      <note_rows>4</note_rows>
+      <column_name>insurance_carrier_name</column_name>
+      <custom_group_name>Vehicle_Use_Agreement</custom_group_name>
+    </CustomField>
+    <CustomField>
+      <label>Policy Expiration</label>
+      <data_type>String</data_type>
+      <html_type>Text</html_type>
+      <is_required>0</is_required>
+      <is_searchable>0</is_searchable>
+      <is_search_range>0</is_search_range>
+      <weight>10</weight>
+      <is_active>1</is_active>
+      <is_view>0</is_view>
+      <text_length>255</text_length>
+      <note_columns>60</note_columns>
+      <note_rows>4</note_rows>
+      <column_name>policy_expiration</column_name>
+      <custom_group_name>Vehicle_Use_Agreement</custom_group_name>
+    </CustomField>
+    <CustomField>
+      <label>Policy Number</label>
+      <data_type>String</data_type>
+      <html_type>Text</html_type>
+      <is_required>0</is_required>
+      <is_searchable>0</is_searchable>
+      <is_search_range>0</is_search_range>
+      <weight>8</weight>
+      <is_active>1</is_active>
+      <is_view>0</is_view>
+      <text_length>255</text_length>
+      <note_columns>60</note_columns>
+      <note_rows>4</note_rows>
+      <column_name>policy_number</column_name>
+      <custom_group_name>Vehicle_Use_Agreement</custom_group_name>
+    </CustomField>
+    <CustomField>
+      <label>Policy Period</label>
+      <data_type>String</data_type>
+      <html_type>Text</html_type>
+      <is_required>0</is_required>
+      <is_searchable>0</is_searchable>
+      <is_search_range>0</is_search_range>
+      <weight>11</weight>
+      <is_active>1</is_active>
+      <is_view>0</is_view>
+      <text_length>255</text_length>
+      <note_columns>60</note_columns>
+      <note_rows>4</note_rows>
+      <column_name>policy_period</column_name>
+      <custom_group_name>Vehicle_Use_Agreement</custom_group_name>
+    </CustomField>
+  </CustomFields>
+  <ProfileGroups>
+    <ProfileGroup>
+      <is_active>1</is_active>
+      <group_type>Individual,Contact</group_type>
+      <title>Parent Information</title>
+      <name>Parent_Information</name>
+      <add_captcha>0</add_captcha>
+      <is_map>0</is_map>
+      <is_edit_link>0</is_edit_link>
+      <is_uf_link>0</is_uf_link>
+      <is_update_dupe>0</is_update_dupe>
+      <is_proximity_search>0</is_proximity_search>
+    </ProfileGroup>
+  </ProfileGroups>
+  <ProfileFields>
+    <ProfileField>
+      <field_name>vehicle_employee_volunteer_name</field_name>
+      <is_active>1</is_active>
+      <is_view>0</is_view>
+      <is_required>1</is_required>
+      <weight>1</weight>
+      <help_post></help_post>
+      <help_pre></help_pre>
+      <visibility>User and User Admin Only</visibility>
+      <in_selector>0</in_selector>
+      <is_searchable>0</is_searchable>
+      <label>Employee/Volunteer Name</label>
+      <field_type>Parent</field_type>
+      <profile_group_name>Parent Information</profile_group_name>
+    </ProfileField>
+    <ProfileField>
+      <field_name>vehicle_license_number</field_name>
+      <is_active>1</is_active>
+      <is_view>0</is_view>
+      <is_required>1</is_required>
+      <weight>2</weight>
+      <help_post></help_post>
+      <help_pre></help_pre>
+      <visibility>User and User Admin Only</visibility>
+      <in_selector>0</in_selector>
+      <is_searchable>0</is_searchable>
+      <label>License Number</label>
+      <field_type>Parent</field_type>
+      <profile_group_name>Parent Information</profile_group_name>
+    </ProfileField>
+    <ProfileField>
+      <field_name>vehicle_state_issued</field_name>
+      <is_active>1</is_active>
+      <is_view>0</is_view>
+      <is_required>1</is_required>
+      <weight>3</weight>
+      <help_post></help_post>
+      <help_pre></help_pre>
+      <visibility>User and User Admin Only</visibility>
+      <in_selector>0</in_selector>
+      <is_searchable>0</is_searchable>
+      <label>State Issued</label>
+      <field_type>Parent</field_type>
+      <profile_group_name>Parent Information</profile_group_name>
+    </ProfileField>
+    <ProfileField>
+      <field_name>vehicle_birth_date</field_name>
+      <is_active>1</is_active>
+      <is_view>0</is_view>
+      <is_required>1</is_required>
+      <weight>4</weight>
+      <help_post></help_post>
+      <help_pre></help_pre>
+      <visibility>User and User Admin Only</visibility>
+      <in_selector>0</in_selector>
+      <is_searchable>0</is_searchable>
+      <label>Birth Date</label>
+      <field_type>Parent</field_type>
+      <profile_group_name>Parent Information</profile_group_name>
+    </ProfileField>
+    <ProfileField>
+      <field_name>vehicle_expiration_date</field_name>
+      <is_active>1</is_active>
+      <is_view>0</is_view>
+      <is_required>1</is_required>
+      <weight>5</weight>
+      <help_post></help_post>
+      <help_pre></help_pre>
+      <visibility>User and User Admin Only</visibility>
+      <in_selector>0</in_selector>
+      <is_searchable>0</is_searchable>
+      <label>Expiration Date</label>
+      <field_type>Parent</field_type>
+      <profile_group_name>Parent Information</profile_group_name>
+    </ProfileField>
+    <ProfileField>
+      <field_name>vehicle_car_make_color</field_name>
+      <is_active>1</is_active>
+      <is_view>0</is_view>
+      <is_required>0</is_required>
+      <weight>6</weight>
+      <help_post></help_post>
+      <help_pre></help_pre>
+      <visibility>User and User Admin Only</visibility>
+      <in_selector>0</in_selector>
+      <is_searchable>0</is_searchable>
+      <label>Car Make/Color</label>
+      <field_type>Parent</field_type>
+      <profile_group_name>Parent Information</profile_group_name>
+    </ProfileField>
+    <ProfileField>
+      <field_name>vehicle_license_plate</field_name>
+      <is_active>1</is_active>
+      <is_view>0</is_view>
+      <is_required>0</is_required>
+      <weight>7</weight>
+      <help_post></help_post>
+      <help_pre></help_pre>
+      <visibility>User and User Admin Only</visibility>
+      <in_selector>0</in_selector>
+      <is_searchable>0</is_searchable>
+      <label>License Plate</label>
+      <field_type>Parent</field_type>
+      <profile_group_name>Parent Information</profile_group_name>
+    </ProfileField>
+    <ProfileField>
+      <field_name>vehicle_no_of_seats_belts</field_name>
+      <is_active>1</is_active>
+      <is_view>0</is_view>
+      <is_required>0</is_required>
+      <weight>8</weight>
+      <help_post></help_post>
+      <help_pre></help_pre>
+      <visibility>User and User Admin Only</visibility>
+      <in_selector>0</in_selector>
+      <is_searchable>0</is_searchable>
+      <label># of Seats Belts</label>
+      <field_type>Parent</field_type>
+      <profile_group_name>Parent Information</profile_group_name>
+    </ProfileField>
+    <ProfileField>
+      <field_name>vehicle_insurance_carrier_name</field_name>
+      <is_active>1</is_active>
+      <is_view>0</is_view>
+      <is_required>0</is_required>
+      <weight>9</weight>
+      <help_post></help_post>
+      <help_pre></help_pre>
+      <visibility>User and User Admin Only</visibility>
+      <in_selector>0</in_selector>
+      <is_searchable>0</is_searchable>
+      <label>Insurance Carrier Name</label>
+      <field_type>Parent</field_type>
+      <profile_group_name>Parent Information</profile_group_name>
+    </ProfileField>
+    <ProfileField>
+      <field_name>vehicle_policy_number</field_name>
+      <is_active>1</is_active>
+      <is_view>0</is_view>
+      <is_required>0</is_required>
+      <weight>10</weight>
+      <help_post></help_post>
+      <help_pre></help_pre>
+      <visibility>User and User Admin Only</visibility>
+      <in_selector>0</in_selector>
+      <is_searchable>0</is_searchable>
+      <label>Policy Number</label>
+      <field_type>Parent</field_type>
+      <profile_group_name>Parent Information</profile_group_name>
+    </ProfileField>
+    <ProfileField>
+      <field_name>vehicle_policy_expiration</field_name>
+      <is_active>1</is_active>
+      <is_view>0</is_view>
+      <is_required>0</is_required>
+      <weight>11</weight>
+      <help_post></help_post>
+      <help_pre></help_pre>
+      <visibility>User and User Admin Only</visibility>
+      <in_selector>0</in_selector>
+      <is_searchable>0</is_searchable>
+      <label>Policy Expiration</label>
+      <field_type>Parent</field_type>
+      <profile_group_name>Parent Information</profile_group_name>
+    </ProfileField>
+    <ProfileField>
+      <field_name>vehicle_policy_period</field_name>
+      <is_active>1</is_active>
+      <is_view>0</is_view>
+      <is_required>0</is_required>
+      <weight>12</weight>
+      <help_post></help_post>
+      <help_pre></help_pre>
+      <visibility>User and User Admin Only</visibility>
+      <in_selector>0</in_selector>
+      <is_searchable>0</is_searchable>
+      <label>Policy Period</label>
+      <field_type>Parent</field_type>
+      <profile_group_name>Parent Information</profile_group_name>
+    </ProfileField>
+  </ProfileFields>
+</CustomData>

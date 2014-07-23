@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" ?>
  <extension key="org.civicrm.school" type="module">
-  <downloadUrl> http://svn.civicrm.org/sfschool/trunk/extensions/org.civicrm.module.school.zip </downloadUrl>
+  <downloadUrl>https://github.com/webaccess/sfschool/archive/master.zip</downloadUrl>
   <file>school</file>
   <name>CiviSchool</name>
   <description>Module that manages all the activities of school.</description>

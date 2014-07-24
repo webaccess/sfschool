@@ -153,35 +153,6 @@ class School_Form_Family_Household extends School_Form_Family {
       }
     }
 
-
-    foreach ( array(1,2) as $blockId ) {
-      //copy address from parent 2, if parent 1 is empty
-      if ( empty( $defaults["address"][$blockId] ) ) {
-	if($blockId == 2){
-	  $defaults["address"][$blockId] = $defaults["address"][$blockId - 1];
-	  unset($defaults["address"][$blockId]['id'], $defaults["address"][$blockId]['contact_id']);
-	}
-	else{
-	  $defaults["address"][$blockId] = $defaults["address"][$blockId + 1];
-	  unset($defaults["address"][$blockId]['id'], $defaults["address"][$blockId]['contact_id']);
-	}
-      }
-
-      if ( empty( $defaults["contact"][$blockId]['phone'][1] ) ) {
-	$defaults["contact"][$blockId]['phone'][1] = $defaults["contact"][$blockId + 1]['phone'][1];
-	unset($defaults["contact"][$blockId]['phone'][1]['id'],
-          $defaults["contact"][$blockId]['phone'][1]['contact_id']);
-      }
-
-
-      // if still empty, add some address defaults
-      if ( empty( $defaults["address"][$blockId] ) ) {
-	$defaults["address[$blockId][city]"]              = 'San Francisco';
-	$defaults["address[$blockId][country_id]"]        = '1228';
-	$defaults["address[$blockId][state_province_id]"] = '1004';
-      }
-    }
-
     $this->assign( 'parentIDs', $this->_parentIds );
 
     return $defaults;
@@ -214,7 +185,7 @@ class School_Form_Family_Household extends School_Form_Family {
         ts('Cell Phone'), CRM_Core_DAO::getAttribute('CRM_Core_DAO_Phone', 'phone'));
 
       // address
-      if ( in_array( $blockId, array(1,2) ) ) {
+      if ( in_array( $blockId, array(1,3) ) ) {
 	CRM_Contact_Form_Edit_Address::buildQuickForm( $this, $blockId, false );
       }
     }

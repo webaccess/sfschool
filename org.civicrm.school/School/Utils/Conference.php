@@ -607,7 +607,7 @@ INNER JOIN civicrm_activity_target     at ON at.activity_id = a.id
 INNER JOIN civicrm_value_school_information s ON s.entity_id = at.target_contact_id
 WHERE      a.activity_type_id = %1
 AND        a.status_id = 1
-AND        a.activity_date_time > NOW( )
+AND        DATE_FORMAT(a.activity_date_time,'%Y-%m-%d') = CURDATE() + INTERVAL %2 DAY
 AND        s.grade_sis >= 1
 AND        s.grade_sis <= 5
 ";

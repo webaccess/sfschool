@@ -32,21 +32,22 @@
  * $Id$
  *
  */
+require_once '../school.php';
 
 require_once 'Utils.php';
 
 function run( ) {
-    School_bin_Utils_auth( );
+  School_bin_Utils_auth( );
 
-    $config =& CRM_Core_Config::singleton( );
+  $config =& CRM_Core_Config::singleton( );
 
-    require_once '../school.php';
-    school_civicrm_config( $config );
+  //require_once '../school.php';
+  school_civicrm_config( $config );
 
-    require_once 'School/Utils/Conference.php';
+  require_once 'School/Utils/CloseActivity.php';
 
-    // send reminder email for all befor %1 days
-    School_Utils_Conference::sendReminderEmail( 1 );
+  // send reminder email for all
+  School_Utils_CloseActivity::closeActivity(2);
 }
 
 run( );

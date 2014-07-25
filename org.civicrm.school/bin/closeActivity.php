@@ -46,7 +46,7 @@ function run( ) {
 
   require_once 'School/Utils/CloseActivity.php';
 
-  // send reminder email for all
+  // Close activity after %1 days from start date
   School_Utils_CloseActivity::closeActivity(2);
 }
 

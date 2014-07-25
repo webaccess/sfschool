@@ -36,25 +36,25 @@
 class School_Utils_CloseActivity {
 
   function closeActivity( $days ) {
-    $condition = "AND v.name = 'Completed'"; 
+    $condition = "AND v.name = 'Completed'";
     $getStatus = CRM_Core_OptionGroup::values( 'activity_status', TRUE, FALSE, FALSE, $condition );
     $getActivityTypeId = CRM_Core_OptionGroup::values( 'activity_type', TRUE, FALSE, FALSE );
-    
+
     $sql = "
-SELECT id 
-FROM civicrm_activity 
+SELECT id
+FROM civicrm_activity
 WHERE DATE_FORMAT(activity_date_time,'%Y-%m-%d') = CURDATE() + INTERVAL %1 DAY AND activity_type_id = %2 ";
 
-    $params = array( 
+    $params = array(
       1 => array( $days, 'Integer' ) ,
       2 => array( $getActivityTypeId['Parent Teacher Conference'], 'Integer' )
     );
 
     $dao = CRM_Core_DAO::executeQuery( $sql, $params );
-    if( $dao->N >= 1 ) {
-      $activity_id = array( );	 
-      while( $dao->fetch( ) ) {
-        $activity_id[] = $dao->id; 
+    if ( $dao->N >= 1 ) {
+      $activity_id = array( );
+      while ( $dao->fetch( ) ) {
+        $activity_id[] = $dao->id;
       }
       $id = implode( ",", $activity_id );
       $update_query = "

@@ -38,32 +38,36 @@ class School_Utils_CloseActivity {
   function closeActivity( $days ) {
     $condition = "AND v.name = 'Completed'"; 
     $getStatus = CRM_Core_OptionGroup::values( 'activity_status', TRUE, FALSE, FALSE, $condition );
+    $getActivityTypeId = CRM_Core_OptionGroup::values( 'activity_type', TRUE, FALSE, FALSE );
+    
     $sql = "
 SELECT id 
 FROM civicrm_activity 
-WHERE DATE_FORMAT(activity_date_time,'%Y-%m-%d') = CURDATE() + INTERVAL %1 DAY ";
+WHERE DATE_FORMAT(activity_date_time,'%Y-%m-%d') = CURDATE() + INTERVAL %1 DAY AND activity_type_id = %2 ";
 
-	$params = array( 
-    1 => array( $days, 'Integer' )
-  );
-	$dao = CRM_Core_DAO::executeQuery( $sql, $params );
-	if( $dao->N >= 1 ) {
-    $activity_id = array( );	 
-    while( $dao->fetch( ) ) {
-	    $activity_id[] = $dao->id; 
-	  }
-    $id = implode( ",", $activity_id );
-    $update_query = "
+    $params = array( 
+      1 => array( $days, 'Integer' ) ,
+      2 => array( $getActivityTypeId['Parent Teacher Conference'], 'Integer' )
+    );
+
+    $dao = CRM_Core_DAO::executeQuery( $sql, $params );
+    if( $dao->N >= 1 ) {
+      $activity_id = array( );	 
+      while( $dao->fetch( ) ) {
+        $activity_id[] = $dao->id; 
+      }
+      $id = implode( ",", $activity_id );
+      $update_query = "
 UPDATE civicrm_activity
 SET status_id = %1
 WHERE id IN (%2)";
 
-	  $update_params = array(
-      1 => array( $getStatus['Completed'], 'Integer'),
-      2 => array( $id, 'String')
-    );
+      $update_params = array(
+        1 => array( $getStatus['Completed'], 'Integer'),
+        2 => array( $id, 'String')
+      );
 
-	  $update_dao = CRM_Core_DAO::executeQuery( $update_query, $update_params );
+      $update_dao = CRM_Core_DAO::executeQuery( $update_query, $update_params );
     }
   }
 }

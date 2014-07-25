@@ -92,13 +92,13 @@ ORDER BY   c.display_name
       ts( 'Conference Duration' ),
       true );
 
- $this->addDate( 'booking_start_date',
-                    ts( 'Conf. Booking Start Date' ),
-                    true );
+    $this->addDate( 'booking_start_date',
+      ts( 'Conf. Booking Start Date' ),
+      true );
 
     $this->addDate( 'booking_end_date',
-                    ts( 'Conf. Booking End Date' ),
-                    true );
+      ts( 'Conf. Booking End Date' ),
+      true );
 
     for ( $i = 1; $i < $this->_numberOfSlots; $i++ ) {
       $this->addDateTime("ptc_date_$i",
@@ -135,7 +135,7 @@ ORDER BY   c.display_name
     if  ( CRM_Utils_Array::value( 'booking_end_date',$fields ) < CRM_Utils_Array::value( 'booking_start_date',$fields )) {
       $errors['booking_start_date'] = ts('Conference Booking Start Date Cannnot be greater than Conference Booking End Date');
     }
-	
+
     // check if there are activities already created for this teacher with this date and time
     $ptcMeetingsCreated = false;
     $advisor_id = $fields['advisor_id'];
@@ -145,30 +145,30 @@ ORDER BY   c.display_name
         $time = $form->_submitValues["ptc_date_{$i}_time"];
         $date = $form->_submitValues["ptc_date_{$i}"];
 
-$skip_er = 1;
+        $skip_er = 1;
         if ($date < $fields['booking_start_date'] || $date > $fields['booking_end_date'] ) {
           $errors["ptc_date_{$i}"] = "Date should be between Conf. Booking Start Date and Conf. Booking End Date. ";
           $skip_er = NULL;
         }
-   if ($skip_er) {
-        $mysqlDate = CRM_Utils_Date::processDate( $date, $time );
-        // query to compare advisor id & input date
-        $query = "SELECT id 
+        if ($skip_er) {
+          $mysqlDate = CRM_Utils_Date::processDate( $date, $time );
+          // query to compare advisor id & input date
+          $query = "SELECT id
                   FROM civicrm_activity ca
-                  WHERE ca.activity_date_time = %1 AND ca.id IN 
+                  WHERE ca.activity_date_time = %1 AND ca.id IN
                     (SELECT activity_id FROM civicrm_activity_assignment WHERE assignee_contact_id = %2) limit 0, 1";
-        $queryParam = array(1 => array($mysqlDate, 'Timestamp'),
-                            2 => array($advisor_id, 'Integer'));
-        $dao = CRM_Core_DAO::executeQuery($query, $queryParam);
-        if ($dao->fetch()) { 
-          $errors["ptc_date_{$i}"] = ts('Conference on '.$date.' at '.$time.' is already booked, Please select some other date or time.');
+          $queryParam = array(1 => array($mysqlDate, 'Timestamp'),
+                        2 => array($advisor_id, 'Integer'));
+          $dao = CRM_Core_DAO::executeQuery($query, $queryParam);
+          if ($dao->fetch()) {
+            $errors["ptc_date_{$i}"] = ts('Conference on '.$date.' at '.$time.' is already booked, Please select some other date or time.');
+          }
         }
-      }  
+      }
     }
-  }
     return $errors;
   }
-  
+
   function setDefaultValues( ) {
     require_once 'School/Utils/Conference.php';
 

@@ -593,10 +593,7 @@ ORDER BY   s.grade_sis
     return $result;
   }
 
-  static function sendReminderEmail( $days = 7, $offset = 7 ) {
-
-    $daysOffset = $days - $offset;
-
+  static function sendReminderEmail( $days = 1 ) {
     $sql = "
 SELECT     a.id, a.activity_date_time,
            aa.assignee_contact_id as advisor_id,

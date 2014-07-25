@@ -46,7 +46,7 @@ function run( ) {
     require_once 'School/Utils/Conference.php';
 
     // send reminder email for all befor %1 days
-    School_Utils_Conference::sendReminderEmail( 1 );
+    School_Utils_Conference::sendReminderEmail( );
 }
 
 run( );

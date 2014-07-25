@@ -92,6 +92,14 @@ ORDER BY   c.display_name
       ts( 'Conference Duration' ),
       true );
 
+ $this->addDate( 'booking_start_date',
+                    ts( 'Conf. Booking Start Date' ),
+                    true );
+
+    $this->addDate( 'booking_end_date',
+                    ts( 'Conf. Booking End Date' ),
+                    true );
+
     for ( $i = 1; $i < $this->_numberOfSlots; $i++ ) {
       $this->addDateTime("ptc_date_$i",
         ts( 'Conference Start Time' ),
@@ -124,6 +132,10 @@ ORDER BY   c.display_name
       $errors['ptc_date_1'] = ts('Conference Start Day is a required field.');
     }
 
+    if  ( CRM_Utils_Array::value( 'booking_end_date',$fields ) < CRM_Utils_Array::value( 'booking_start_date',$fields )) {
+      $errors['booking_start_date'] = ts('Conference Booking Start Date Cannnot be greater than Conference Booking End Date');
+    }
+	
     // check if there are activities already created for this teacher with this date and time
     $ptcMeetingsCreated = false;
     $advisor_id = $fields['advisor_id'];
@@ -132,6 +144,13 @@ ORDER BY   c.display_name
         // form date convert to mysql
         $time = $form->_submitValues["ptc_date_{$i}_time"];
         $date = $form->_submitValues["ptc_date_{$i}"];
+
+$skip_er = 1;
+        if ($date < $fields['booking_start_date'] || $date > $fields['booking_end_date'] ) {
+          $errors["ptc_date_{$i}"] = "Date should be between Conf. Booking Start Date and Conf. Booking End Date. ";
+          $skip_er = NULL;
+        }
+   if ($skip_er) {
         $mysqlDate = CRM_Utils_Date::processDate( $date, $time );
         // query to compare advisor id & input date
         $query = "SELECT id 
@@ -146,6 +165,7 @@ ORDER BY   c.display_name
         }
       }  
     }
+  }
     return $errors;
   }
   
@@ -156,6 +176,7 @@ ORDER BY   c.display_name
 
     list($defaults['ptc_date'], $defaults['ptc_date_time'])
       = CRM_Utils_Date::setDateDefaults(date("Y-m-d", time( ) + 14 * 24 * 60 * 60 ));
+    $defaults['booking_start_date'] = $defaults['booking_end_date'] = $defaults['ptc_date'];
     $defaults['ptc_duration'] = 25;
 
     $defaults['ptc_subject'] = School_Utils_Conference::SUBJECT;
@@ -199,7 +220,9 @@ ORDER BY   c.display_name
         $params['ptc_subject'],
         School_Utils_Conference::LOCATION,
         School_Utils_Conference::STATUS,
-        $params['ptc_duration']
+        $params['ptc_duration'],
+        $params['booking_start_date'],
+        $params['booking_end_date']
       );
     }
 

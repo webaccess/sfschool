@@ -61,7 +61,7 @@ INNER JOIN civicrm_value_report_cards r ON c.id = r.entity_id
 INNER JOIN civicrm_value_school_information s ON c.id = s.entity_id
 WHERE     c.id IN ($childrenIDString)
 AND       c.contact_sub_type LIKE '%Student%'
-ORDER BY  c.id, r.report_term DESC
+ORDER BY  r.report_grade, c.id, r.report_term DESC
 ";
 
         $dao = CRM_Core_DAO::executeQuery( $query );

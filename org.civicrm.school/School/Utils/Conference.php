@@ -593,10 +593,7 @@ ORDER BY   s.grade_sis
     return $result;
   }
 
-  static function sendReminderEmail( $days = 7, $offset = 7 ) {
-
-    $daysOffset = $days - $offset;
-
+  static function sendReminderEmail( $days = 1 ) {
     $sql = "
 SELECT     a.id, a.activity_date_time,
            aa.assignee_contact_id as advisor_id,
@@ -607,7 +604,7 @@ INNER JOIN civicrm_activity_target     at ON at.activity_id = a.id
 INNER JOIN civicrm_value_school_information s ON s.entity_id = at.target_contact_id
 WHERE      a.activity_type_id = %1
 AND        a.status_id = 1
-AND        a.activity_date_time > NOW( )
+AND        DATE_FORMAT(a.activity_date_time,'%Y-%m-%d') = CURDATE() + INTERVAL %2 DAY
 AND        s.grade_sis >= 1
 AND        s.grade_sis <= 5
 ";

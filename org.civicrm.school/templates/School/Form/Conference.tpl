@@ -7,6 +7,8 @@
 </dl>
 <dl>
 <dt>{$form.advisor_id.label}</dt><dd>{$form.advisor_id.html}</dd>
+<dt>{$form.booking_start_date.label}</dt><dd>{include file="CRM/common/jcalendar.tpl" elementName=booking_start_date}</dd>
+<dt>{$form.booking_end_date.label}</dt><dd>{include file="CRM/common/jcalendar.tpl" elementName=booking_end_date}</dd>
 {if ! $multipleDay}
 <dt>{$form.ptc_date.label}</dt><dd>{include file="CRM/common/jcalendar.tpl" elementName=ptc_date}</dd>
 {/if}

@@ -247,7 +247,7 @@ AND        at.target_contact_id = r.contact_id_b;
     $childrenIDString = implode( ',', array_values( $childrenIDs ) );
 
     $sql = "
-SELECT     r.contact_id_b, a.subject, a.location,
+SELECT     a.id, r.contact_id_b, a.subject, a.location,
            aac.display_name as aac_display_name, aac.nick_name as aac_nick_name, aac.id as advisor_id,
            rcb.display_name as rcb_display_name,
            s.grade_sis as grade
@@ -268,13 +268,24 @@ AND        at.target_contact_id IS NULL
 GROUP BY r.contact_id_b
 ";
 
+    $getbooking_startdate_id  = 'custom_'.CRM_Core_BAO_CustomField::getCustomFieldID( 'Conference Booking Start Date' );
+    $getbooking_enddate_id  = 'custom_'.CRM_Core_BAO_CustomField::getCustomFieldID( 'Conference Booking End Date' );
+    $current_date = date("m/d/Y");
+	
     $params = array( 1 => array( self::getAdvisorRelTypeId( ), 'Integer' ),
               2 => array( self::getConferenceActTypeId( ) , 'Integer' ) );
     $dao = CRM_Core_DAO::executeQuery( $sql, $params );
     while ( $dao->fetch( ) ) {
+      $bookingParams = array(
+        'version' => '3',
+        'sequential' =>'1',
+        'id' =>$dao->id,
+        'return.'.$getbooking_startdate_id =>'1',
+      );
+      $results = civicrm_api( "Activity","get", $bookingParams );
       $url = CRM_Utils_System::url( 'civicrm/profile/edit', "reset=1&gid={$gidStudent}&id={$dao->contact_id_b}&advisorID={$dao->advisor_id}&ptc=1&$parent" );
       $advisorName = $dao->aac_nick_name ? $dao->aac_nick_name : $dao->aac_display_name;
-      if ($dao->grade >= 6 && $dao->grade <= 7) {
+      if ($results['values'][0][$getbooking_startdate_id] <= $current_date && $results['values'][0][$getbooking_enddate_id]  >= $current_date ) {
         $values[$dao->contact_id_b]['meeting']['title'] = "Please schedule your {$dao->subject} with {$advisorName}. Online registraton will <strong>close Apr 8th</strong>";
         $values[$dao->contact_id_b]['meeting']['edit'] = "<a href=\"{$url}\">Schedule a conference for {$dao->rcb_display_name}</a>";
       } else {
@@ -506,7 +517,9 @@ GROUP BY r.contact_id_b
     $subject,
     $location,
     $statusID,
-    $duration = 30 ) {
+    $duration = 30,
+    $booking_start_date,
+    $booking_end_date ) {
     require_once 'CRM/Activity/DAO/Activity.php';
 
     $activity = new CRM_Activity_DAO_Activity( );
@@ -525,6 +538,21 @@ GROUP BY r.contact_id_b
     $assignment->activity_id = $activity->id;
     $assignment->assignee_contact_id = $teacherID;
     $assignment->save( );
+
+    /* for saving custom values of activity */
+    $booking_startdate_id  = 'custom_'.CRM_Core_BAO_CustomField::getCustomFieldID( 'Conference Booking Start Date' );
+    $booking_enddate_id  = 'custom_'.CRM_Core_BAO_CustomField::getCustomFieldID( 'Conference Booking End Date' );
+	
+    $customFields = array();
+    $customParams = array( $booking_startdate_id => $booking_start_date,
+                           $booking_enddate_id => $booking_end_date, );
+
+    $paramsRel['custom'] = CRM_Core_BAO_CustomField::postProcess( $customParams,
+                               $customFields,
+                               $activity->id,
+                               'Activity',
+                               true );
+       CRM_Core_BAO_CustomValueTable::store( $paramsRel['custom'], 'civicrm_activity',$activity->id  );
 
     return $activity->id;
   }

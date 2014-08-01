@@ -214,18 +214,18 @@ class School_Form_Family_Household extends School_Form_Family {
         ts('Cell Phone'), CRM_Core_DAO::getAttribute('CRM_Core_DAO_Phone', 'phone'));
 
       // address
-      if ( in_array( $blockId, array(1,2) ) ) {
+      if ( in_array( $blockId, array(1,3) ) ) {
 	CRM_Contact_Form_Edit_Address::buildQuickForm( $this, $blockId, false );
       }
     }
     parent::buildQuickForm( );
   }
-  
+
   function sendMail( $groupName, $valueName, $email ) {
     $templateVars = array( );
     if( School_APPLICATION_SCHOOL_CONTACT_ID != null ) {
       list( $templateVars['schoolName'],
-            $templateVars['schoolEmail'] ) = 
+            $templateVars['schoolEmail'] ) =
         School_Utils_Query::getNameAndEmail( School_APPLICATION_SCHOOL_CONTACT_ID );
       $from = $templateVars['schoolName']." <".$templateVars['schoolEmail'].">";
       $sendTemplateParams = array(
@@ -237,11 +237,11 @@ class School_Form_Family_Household extends School_Form_Family {
       CRM_Core_BAO_MessageTemplates::sendTemplate( $sendTemplateParams );
     }
   }
-  
+
   function postProcess()
   {
     $params = $this->controller->exportValues( $this->_name );
-       
+
     require_once 'CRM/Dedupe/Finder.php';
     require_once 'School/Utils/Query.php';
 
@@ -391,8 +391,8 @@ class School_Form_Family_Household extends School_Form_Family {
 
 	}
       }
-    }    
-    
+    }
+
     $defaultValues = $this->_defaultValues;
     $submitValues = $params;
     $groupNameEmail = 'updated_email';
@@ -406,7 +406,7 @@ class School_Form_Family_Household extends School_Form_Family {
         }
       }
     }
-    
+
     $groupNameAddr = 'updated_address';
     $valueNameAddr = 'address_update_notification';
     $postAddr = $submitValues['address'];
@@ -419,12 +419,12 @@ class School_Form_Family_Household extends School_Form_Family {
         }
       }
     }
-  
+
     $contactIds = array();
     $addrs = array();
-    foreach( $postAddr as $blockid => $values ) {  
+    foreach( $postAddr as $blockid => $values ) {
       foreach( $values as $postAddrKey => $postAddrVal ) {
-        if( $postAddrVal != $preAddr[$blockid][$postAddrKey] ) {  
+        if( $postAddrVal != $preAddr[$blockid][$postAddrKey] ) {
           $addrs [] = $postAddr[$blockid];
           $contactIds[] = $preAddr[$blockid]['contact_id'];
           break;

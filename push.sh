@@ -1,7 +1,7 @@
 #!/bin/bash
 pushd ~/git/sfschool
 git commit -a -m 'more SFS fixes'
-git push origin
+git push origin master
 popd
 pushd /tmp
 rm -rf sfschool

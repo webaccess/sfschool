@@ -4,7 +4,9 @@ define( 'HOME_LOCATION_TYPE_ID', 1 );
 
 function parsePSFile( &$studentInfo ) {
 
-  $fdRead  = fopen( '/home/lobo/SFS/PowerSchool/export/NewFamilies_2014.csv', 'r' );
+  // $fileName = '/home/lobo/SFS/PowerSchool/export/NewFamilies_2014.csv';
+  $fileName = '/tmp/NewFamilies_2014.csv';
+  $fdRead  = fopen( $fileName, 'r' );
 
   if ( ! $fdRead ) {
     echo "Could not read file\n";
@@ -326,7 +328,7 @@ WHERE  contact_id = %1
     // check if user has logged into drupal account
     $query = "
 SELECT uid, login
-FROM   drupal_sfs.users
+FROM   drupal.users
 WHERE  ( name = %1 OR mail = %1 )
 ";
     $params = array( 1 => array( $email, 'String' ) );

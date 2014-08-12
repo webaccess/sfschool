@@ -1147,10 +1147,10 @@ ORDER BY entity_id
       $currentYear  = date( 'Y' );
 
       $startYear = $endYear = $currentYear;
-      $startMonth = '08';
+      $startMonth = '09';
 
       $m = $currentMonth = date( 'm' );
-      if ( $m < 8 ) {
+      if ( $m < 9 ) {
         $startYear--;
       }
 

@@ -77,7 +77,7 @@ class School_Page_ExtendedCare extends CRM_Core_Page {
     }
     // this hack is to allow us to go back to last year
     // and see stuff
-    // $currentYear--;
+    $currentYear--;
 
     $currentMonth = '08';
 

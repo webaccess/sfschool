@@ -4,7 +4,7 @@ define( 'HOME_LOCATION_TYPE_ID', 1 );
 
 function parsePSFile( &$studentInfo ) {
 
-  $fdRead  = fopen( '/home/lobo/SFS/PowerSchool/export/NewFamilies_2013.csv', 'r' );
+  $fdRead  = fopen( '/home/lobo/SFS/PowerSchool/export/NewFamilies_2014.csv', 'r' );
 
   if ( ! $fdRead ) {
     echo "Could not read file\n";

@@ -952,8 +952,8 @@ GROUP BY  YEAR(s.signin_time), MONTH(s.signin_time) ORDER BY s.signin_time DESC"
 
     $dateRange = array( );
 
-    if ( $m >= 8 ) {
-      for ( $i = 8 ; $i <= $m ; $i++ ) {
+    if ( $m >= 9 ) {
+      for ( $i = 9 ; $i <= $m ; $i++ ) {
         $mon = ($i == 8 ) ? '08' : ($i == 9) ? '09' : $i;
         $end = self::getDaysInMonth( $i, $currentYear );
         $dateRange[] = array( 'start' => "{$currentYear}{$mon}01",
@@ -963,7 +963,7 @@ GROUP BY  YEAR(s.signin_time), MONTH(s.signin_time) ORDER BY s.signin_time DESC"
       }
     } else {
       $startYear  = $currentYear - 1;
-      for ($i = 8 ; $i <= 12 ; $i++) {
+      for ($i = 9 ; $i <= 12 ; $i++) {
         $mon = ($i == 8 ) ? '08' : ($i == 9) ? '09' : $i;
         $end = self::getDaysInMonth( $i, $startYear );
         $dateRange[] = array( 'start' => "{$startYear}{$mon}01",
@@ -1172,12 +1172,14 @@ ORDER BY entity_id
         $studentID );
 
     require_once 'School/Utils/ExtendedCareFees.php';
-    $feeDetails = School_Utils_ExtendedCareFees::feeDetails( $startDate,
-                  $endDate  ,
-                  null      ,
-                  false     ,
-                  false     ,
-                  $studentID );
+    $feeDetails = School_Utils_ExtendedCareFees::feeDetails(
+      $startDate,
+      $endDate  ,
+      null      ,
+      false     ,
+      false     ,
+      $studentID
+    );
 
 
     $completeDetails = CRM_Utils_Array::crmArrayMerge( $dynamicDetails, $feeDetails );

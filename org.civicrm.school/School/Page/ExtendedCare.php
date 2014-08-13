@@ -66,8 +66,11 @@ class School_Page_ExtendedCare extends CRM_Core_Page {
   function run( ) {
     $id = CRM_Utils_Request::retrieve( 'id', 'Integer', $this, true );
 
-    $action = CRM_Utils_Request::retrieve('action', 'String',
-              $this, false, 'browse' );
+    $action =
+      CRM_Utils_Request::retrieve(
+        'action', 'String',
+        $this, false, 'browse'
+      );
     $this->assign('action', $action);
 
     $currentYear  = date( 'Y' );

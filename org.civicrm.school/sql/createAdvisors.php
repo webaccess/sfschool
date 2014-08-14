@@ -6,8 +6,8 @@ function splitName( $name, $separator = ',' ) {
     trim( $names[1] ) );
 }
 
-function getContactID( $lastName, $firstName, $grade = NULL) {
-  if ($grade) {
+function getContactID( $lastName, $firstName, $student = TRUE) {
+  if ($student) {
     $sql = "
 SELECT     c.id, c.display_name
 FROM       civicrm_contact c
@@ -15,11 +15,11 @@ INNER JOIN civicrm_value_school_information s ON c.id = s.entity_id
 WHERE      c.first_name = %1
 AND        c.last_name  = %2
 AND        c.contact_sub_type LIKE '%Student%'
-AND        s.grade_sis = %3
 ";
-    $params = array( 1 => array( trim( $firstName ), 'String' ),
-              2 => array( trim( $lastName ), 'String' ),
-              3 => array( $grade, 'Integer' ) );
+    $params = array(
+      1 => array( trim( $firstName ), 'String' ),
+      2 => array( trim( $lastName ), 'String' ),
+    );
   } else {
     $sql = "
 SELECT     c.id, c.display_name
@@ -28,8 +28,10 @@ WHERE      c.first_name = %1
 AND        c.last_name  = %2
 AND        c.contact_sub_type LIKE '%Staff%'
 ";
-    $params = array( 1 => array( trim( $firstName ), 'String' ),
-              2 => array( trim( $lastName ), 'String' ) );
+    $params = array(
+      1 => array( trim( $firstName ), 'String' ),
+      2 => array( trim( $lastName ), 'String' )
+    );
   }
 
   $dao = CRM_Core_DAO::executeQuery( $sql, $params );
@@ -42,12 +44,12 @@ AND        c.contact_sub_type LIKE '%Staff%'
     return $dao->id;
   }
 
-  echo "Could not find contact ID for $lastName, $firstName, $grade\n";
+  echo "Could not find contact ID for $lastName, $firstName\n";
   return null;
 }
 
 function createAdvisors( ) {
-  $fdRead  = fopen( '/home/lobo/SFS/SFS/MSAdvisors.csv', 'r' );
+  $fdRead  = fopen( '/home/lobo/SFS/PowerSchool/export/MSAdvisors_2014.csv', 'r' );
 
   if ( ! $fdRead ) {
     echo "Could not read file\n";
@@ -57,18 +59,15 @@ function createAdvisors( ) {
 
   $values = array( );
   while ( $fields = fgetcsv( $fdRead ) ) {
-    list( $studentName, $advisorName, $grade) = $fields;
+    list( $studentLast, $studentFirst, $advisorLast, $advisorFirst) = $fields;
 
-    list($studentLast, $studentFirst) = splitName($studentName);
-    list($advisorLast, $advisorFirst) = splitName($advisorName);
-
-    $studentID = getContactID( $studentLast, $studentFirst, $grade);
+    $studentID = getContactID( $studentLast, $studentFirst, TRUE);
     if (! $studentID) {
       echo "Could not find Student: $studentLast, $studentFirst, $grade\n";
       continue;
     }
 
-    $advisorID = getContactID($advisorLast, $advisorFirst);
+    $advisorID = getContactID($advisorLast, $advisorFirst, FALSE);
     if (! $advisorID) {
       echo "Could not find advisor: $advisorLast, $advisorFirst\n";
       continue;
@@ -89,7 +88,11 @@ VALUES
 }
 
 function initialize( ) {
-  require_once '/home/lobo/www/d7/sites/school/civicrm.settings.php';
+  require_once '../bin/Utils.php';
+
+  global $civicrm_root;
+
+  require_once "$civicrm_root/civicrm.config.php";
 
   require_once 'CRM/Core/Config.php';
   $config =& CRM_Core_Config::singleton( );

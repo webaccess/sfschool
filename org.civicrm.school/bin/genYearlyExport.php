@@ -46,12 +46,12 @@ function run( ) {
   require_once 'School/Utils/ExtendedCare.php';
   require_once 'School/Utils/ExtendedCareFees.php';
 
-  $startDate = '20120901';
-  $endDate   = '20130831';
+  $startDate = '20130801';
+  $endDate   = '20140826';
 
   $config = CRM_Core_Config::singleton( );
   require_once 'CRM/Utils/File.php';
-  CRM_Utils_File::createDir( $config->configAndLogDir . DIRECTORY_SEPARATOR . '2012-2013' );
+  CRM_Utils_File::createDir( $config->configAndLogDir . DIRECTORY_SEPARATOR . '2013-2014' );
 
   $sql = "
 SELECT c.id, c.sort_name, v.grade_sis
@@ -67,7 +67,7 @@ ORDER BY v.grade_sis, c.id
   while ( $dao->fetch( ) ) {
     $id = $dao->id;
     $studentName = $dao->sort_name;
-    echo "$id, $studentName, {$dao->grade_sis}<p>";
+    echo "$id, $studentName, {$dao->grade_sis}\n";
     flush( );
 
     $feeDetails = School_Utils_ExtendedCareFees::feeDetails(
@@ -96,7 +96,7 @@ ORDER BY v.grade_sis, c.id
 
     if ( ! CRM_Utils_Array::crmIsEmptyArray( $allDetails ) ) {
       $fp = fopen( $config->configAndLogDir . DIRECTORY_SEPARATOR .
-            '2012-2013' . DIRECTORY_SEPARATOR .
+            '2013-2014' . DIRECTORY_SEPARATOR .
             "{$studentName}.csv", "w" );
 
       foreach ( $allDetails as $name => $fields ) {

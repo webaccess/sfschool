@@ -21,7 +21,7 @@ FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\n' ;
 LOAD DATA INFILE '/home/sfschool/lobo/Tutoring2012.csv' INTO TABLE civicrm_value_extended_care_fee_tracker FIELDS
 TERMINATED BY '|' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\n' ;
 
-LOAD DATA INFILE '/var/log/mysql/carryOver2013.csv' INTO
+LOAD DATA INFILE '/tmp/carryOver2014.csv' INTO
 TABLE civicrm_value_extended_care_fee_tracker FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"'
 LINES TERMINATED BY '\n' ;
 

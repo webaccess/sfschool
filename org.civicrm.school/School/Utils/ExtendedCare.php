@@ -1140,8 +1140,10 @@ ORDER BY entity_id
     $startDate = null,
     $endDate   = null
   ) {
-    if ( $startDate == null ||
-      $endDate == null ) {
+    if (
+      $startDate == null ||
+      $endDate == null
+    ) {
       // always do per academic year
       // which goes from Aug (08) - June (06)
       $currentYear  = date( 'Y' );
@@ -1154,7 +1156,7 @@ ORDER BY entity_id
         $startYear--;
       }
 
-      $startDate = "{$startYear}{$startMonth}01";
+      $startDate = "{$startYear}{$startMonth}25";
       $endDate   = date( 'Ymd' );
 
       // $startDate = "20110901";

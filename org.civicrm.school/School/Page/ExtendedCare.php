@@ -80,7 +80,7 @@ class School_Page_ExtendedCare extends CRM_Core_Page {
     }
     // this hack is to allow us to go back to last year
     // and see stuff
-    $currentYear--;
+    // $currentYear--;
 
     $currentMonth = '08';
 
@@ -90,7 +90,7 @@ class School_Page_ExtendedCare extends CRM_Core_Page {
         'String',
         $this,
         false,
-        "{$currentYear}{$currentMonth}01" );
+        "{$currentYear}{$currentMonth}25" );
     $endDate =
       CRM_Utils_Request::retrieve(
         'endDate',

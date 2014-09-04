@@ -47,9 +47,9 @@ class School_Utils_ExtendedCare {
     FEE_POSITION = 9,
     START_POSITION = 10,
     END_POSITION = 11,
-    TERM = 'Spring 2014',
-    COORDINATOR_NAME  = 'Vivian Walz',
-    COORDINATOR_EMAIL = 'vwalz@school.org';
+    TERM = 'Fall 2014',
+    COORDINATOR_NAME  = 'Sarah Wood',
+    COORDINATOR_EMAIL = 'swood@school.org';
 
   static
     $_extendedCareElements = null,

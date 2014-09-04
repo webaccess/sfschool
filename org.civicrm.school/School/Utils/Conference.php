@@ -35,7 +35,7 @@
 
 class School_Utils_Conference {
   const
-    SUBJECT  = 'Spring 2014 Parent Teacher Conference',
+    SUBJECT  = 'Fall 2014 Parent Teacher Conference',
     LOCATION = 'San Francisco School',
     STATUS   = 1;
 
@@ -271,7 +271,7 @@ GROUP BY r.contact_id_b
     $getbooking_startdate_id  = 'custom_'.CRM_Core_BAO_CustomField::getCustomFieldID( 'Conference Booking Start Date' );
     $getbooking_enddate_id  = 'custom_'.CRM_Core_BAO_CustomField::getCustomFieldID( 'Conference Booking End Date' );
     $current_date = date("m/d/Y");
-	
+
     $params = array( 1 => array( self::getAdvisorRelTypeId( ), 'Integer' ),
               2 => array( self::getConferenceActTypeId( ) , 'Integer' ) );
     $dao = CRM_Core_DAO::executeQuery( $sql, $params );
@@ -542,7 +542,7 @@ GROUP BY r.contact_id_b
     /* for saving custom values of activity */
     $booking_startdate_id  = 'custom_'.CRM_Core_BAO_CustomField::getCustomFieldID( 'Conference Booking Start Date' );
     $booking_enddate_id  = 'custom_'.CRM_Core_BAO_CustomField::getCustomFieldID( 'Conference Booking End Date' );
-	
+
     $customFields = array();
     $customParams = array( $booking_startdate_id => $booking_start_date,
                            $booking_enddate_id => $booking_end_date, );

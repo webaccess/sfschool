@@ -187,4 +187,15 @@
      <title>Schedule Slots</title>
      <access_arguments>profile listings and forms</access_arguments>
   </item>
+  <item>
+     <path>civicrm/school/teacherlist</path>
+     <page_callback>School_Page_TeacherList</page_callback>
+     <access_arguments>administer CiviCRM</access_arguments>
+  </item>
+
+  <item>
+     <path>civicrm/school/conferenceview</path>
+     <page_callback>School_Form_ConferenceView</page_callback>
+     <access_arguments>administer CiviCRM</access_arguments>
+	</item>
 </menu>

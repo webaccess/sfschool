@@ -32,13 +32,13 @@
      <td>&nbsp;</td>
   </tr>
   <tr>
-     <td>&nbsp;&nbsp;&raquo;<strong>Full Pay or Paying Under 100 Blocks</strong> @ $13.00 per block</td>
-{assign var=total value=`$balanceDetails.balanceDue*13.00`}
+     <td>&nbsp;&nbsp;&raquo;<strong>Full Pay or Paying Under 100 Blocks</strong> @ $13.50 per block</td>
+{assign var=total value=`$balanceDetails.balanceDue*13.50`}
      <td>{$total|crmMoney}</td>
   </tr>
   <tr>
-     <td>&nbsp;&nbsp;&raquo;<strong>Indexed Tuition or Paying Over 100 Blocks</strong> @ $11.00 per block</td>
-{assign var=total value=`$balanceDetails.balanceDue*11.00`}
+     <td>&nbsp;&nbsp;&raquo;<strong>Indexed Tuition or Paying Over 100 Blocks</strong> @ $11.50 per block</td>
+{assign var=total value=`$balanceDetails.balanceDue*11.50`}
      <td>{$total|crmMoney}</td>
   </tr>
 {else}

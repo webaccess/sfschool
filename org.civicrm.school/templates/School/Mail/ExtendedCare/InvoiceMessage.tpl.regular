@@ -18,8 +18,8 @@ Total Blocks Charged (Standard + Activity Blocks): {$totalCharges}
 
 Block Balance Due: {$balanceDue}
 
-{assign var=totalFull value=`$balanceDue*13.00`}
-{assign var=totalInd value=`$balanceDue*11.00`}
+{assign var=totalFull value=`$balanceDue*13.50`}
+{assign var=totalInd value=`$balanceDue*11.50`}
 Block Balance Due In Dollars
-    >> Full Pay or Paying Under 100 Blocks @ $13.00 per block: {$totalFull|crmMoney}
-    >> Indexed Tuition or Paying Over 100 Blocks @ $11.00 per block: {$totalInd|crmMoney}
+    >> Full Pay or Paying Under 100 Blocks @ $13.50 per block: {$totalFull|crmMoney}
+    >> Indexed Tuition or Paying Over 100 Blocks @ $11.50 per block: {$totalInd|crmMoney}

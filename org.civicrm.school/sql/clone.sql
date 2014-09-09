@@ -11,8 +11,9 @@ FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\n' ;
 LOAD DATA INFILE '/Users/lobo/svn/sfschool/sql/Spring2012.csv' INTO TABLE `sfschool_extended_care_source`
 FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\n' ;
 
-LOAD DATA INFILE '/home/sfschool/www/drupal/sites/all/modules/sfschool/sql/Spring2012.csv' INTO TABLE `school_extended_care_source`
- FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\n' ;
+LOAD DATA INFILE '/tmp/Fall2014.csv'
+INTO TABLE `school_extended_care_source`
+FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\n' ;
 
 LOAD DATA INFILE '/tmp/Spring2014Charges.sql'
 INTO TABLE civicrm_value_extended_care_fee_tracker

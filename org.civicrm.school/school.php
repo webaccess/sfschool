@@ -617,7 +617,7 @@ function school_civicrm_navigationMenu( &$params ) {
         ),
         '10' => array (
           'attributes' => array (
-            'label'      => 'Parent teacher conference',
+            'label'      => 'Parent Teacher Conference',
             'name'       => 'Setup Parent teacher conference',
             'url'        => CRM_Utils_System::url( 'civicrm/school/teacherlist',
                           'reset=1', true,

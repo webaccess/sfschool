@@ -285,8 +285,9 @@ GROUP BY r.contact_id_b
       $results = civicrm_api( "Activity","get", $bookingParams );
       $url = CRM_Utils_System::url( 'civicrm/profile/edit', "reset=1&gid={$gidStudent}&id={$dao->contact_id_b}&advisorID={$dao->advisor_id}&ptc=1&$parent" );
       $advisorName = $dao->aac_nick_name ? $dao->aac_nick_name : $dao->aac_display_name;
-      if (0 && $results['values'][0][$getbooking_startdate_id] <= $current_date && $results['values'][0][$getbooking_enddate_id]  >= $current_date ) {
-        $values[$dao->contact_id_b]['meeting']['title'] = "Please schedule your {$dao->subject} with {$advisorName}. Online registraton will <strong>close Nov 1st</strong>";
+      $endDate = CRM_Utils_Date::customFormat($results['values'][0][$getbooking_enddate_id], '%b %d%, %Y');
+      if ($results['values'][0][$getbooking_startdate_id] <= $current_date && $results['values'][0][$getbooking_enddate_id]  >= $current_date ) {
+        $values[$dao->contact_id_b]['meeting']['title'] = "Please schedule your {$dao->subject} with {$advisorName}. Online registraton will <strong>close ".$endDate."</strong>";
         $values[$dao->contact_id_b]['meeting']['edit'] = "<a href=\"{$url}\">Schedule a conference for {$dao->rcb_display_name}</a>";
       } else {
         $values[$dao->contact_id_b]['meeting']['title'] = "<strong>Online registration is now closed. Please contact your child's head teacher ({$advisorName}) directly to schedule an Intake Conference.</strong>";

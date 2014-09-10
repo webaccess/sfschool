@@ -54,6 +54,8 @@ class School_Form_Conference extends CRM_Core_Form {
       );
     $this->assign( 'multipleDay'  , $this->_multipleDay   );
     $this->assign( 'numberOfSlots', $this->_numberOfSlots );
+    $session = CRM_Core_Session::singleton();
+    $session->pushUserContext(CRM_Utils_System::url('civicrm/school/teacherlist', "reset=1"));
   }
 
   function buildQuickForm( ) {

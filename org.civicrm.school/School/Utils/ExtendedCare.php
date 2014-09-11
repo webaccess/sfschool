@@ -798,7 +798,7 @@ SELECT     c.id, c.display_name, c.first_name, c.last_name, v.grade_sis,
            s.signout_time, s.signin_time,
            s.class, s.pickup_person_name,
            s.is_morning, s.at_school_meeting,
-           v.extended_care_status_2013 as extended_care_status, s.id as signout_id
+           v.extended_care_status_2014_94 as extended_care_status, s.id as signout_id
 FROM       civicrm_value_extended_care_signout s
 INNER JOIN civicrm_contact c ON c.id = s.entity_id
 INNER JOIN civicrm_value_school_information v ON c.id = v.entity_id

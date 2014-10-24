@@ -90,12 +90,10 @@ function run( ) {
   initialize( );
 
   readPaymentFile(
-    '/home/lobo/SFS/SFS/Spring2014Charges.csv',
-    '/home/lobo/SFS/SFS/Spring2014Charges.sql',
+    '/home/lobo/SFS/SFS/Fall2014Charges.csv',
+    '/home/lobo/SFS/SFS/Fall2014Charges.sql',
     3384
   );
 }
 
 run( );
-
-

@@ -1,6 +1,6 @@
 Good day,
 
-Our records show that your child’s extended day care account still has a balance.  Please send in a check to pay the balance as soon as possible as we are wrapping up 2013-14 school year.   if you have any questions or believe our records are incorrect please call or email the Business Office at 239-1410 or business@sfschool.org. Checks are payable to The San Francisco School, 300 Gaven Street, San Francisco, CA 94134 and please note your child's name in the memo line.
+The data on the Extended Day Care has been updated to include the Fall activity fee. Our records show that your child’s extended day care account has a balance. If you have any questions or believe our records are incorrect please call or email the Business Office at 239-1410 or business@sfschool.org. Checks are payable to The San Francisco School, 300 Gaven Street, San Francisco, CA 94134 and please note your child's name in the memo line.
 
 Below is an overview of your Daycare Usage . To review the details of your Extended Day Account please logon to the SFS Parent Portal at http://sfschool.org/drupal and click on View Extended Care block charges.
 

@@ -58,15 +58,15 @@ function readPaymentFile( $readFile, $writeFile, $globalID ) {
       continue;
     }
 
-    $blocksCharged = $fields[6];
-    $details = "Spring 2014 - {$fields[3]}";
+    $blocksCharged = (double ) $fields[6];
+    $details = "Fall 2014 - {$fields[3]}";
 
     $output = array(
       $globalID++,
       $contactID,
       "Charge",
       $details,
-      "2014-04-17",
+      "2014-10-28",
       $blocksCharged,
       'Activity Fee'
     );
@@ -92,7 +92,7 @@ function run( ) {
   readPaymentFile(
     '/home/lobo/SFS/SFS/Fall2014Charges.csv',
     '/home/lobo/SFS/SFS/Fall2014Charges.sql',
-    3384
+    3806
   );
 }
 

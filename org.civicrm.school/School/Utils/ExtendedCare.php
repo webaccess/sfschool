@@ -49,7 +49,7 @@ class School_Utils_ExtendedCare {
     END_POSITION = 11,
     TERM = 'Fall 2014',
     COORDINATOR_NAME  = 'Sarah Wood',
-    COORDINATOR_EMAIL = 'swood@school.org';
+    COORDINATOR_EMAIL = 'swood@sfschool.org';
 
   static
     $_extendedCareElements = null,

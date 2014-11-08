@@ -224,7 +224,7 @@ AND        at.target_contact_id = r.contact_id_b;
       $advisorName = $dao->aac_nick_name ? $dao->aac_nick_name : $dao->aac_display_name;
       $values[$dao->contact_id_b]['meeting']['title'] = "Your {$dao->subject} is scheduled for $dateTime with {$advisorName}";
       $values[$dao->contact_id_b]['meeting']['edit']  = '';
-      if ( $dao->grade >= 0 && $dao->grade <= 8) {
+      if ( 0 && $dao->grade >= 0 && $dao->grade <= 8) {
         $values[$dao->contact_id_b]['meeting']['edit']  = "<a href=\"{$url}\">Modify conference time for {$dao->rcb_display_name}</a>";
       }
       $values[$dao->contact_id_b]['meeting']['id']    = $dao->id;

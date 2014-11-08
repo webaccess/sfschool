@@ -285,7 +285,7 @@ GROUP BY r.contact_id_b
       $results = civicrm_api( "Activity","get", $bookingParams );
       $url = CRM_Utils_System::url( 'civicrm/profile/edit', "reset=1&gid={$gidStudent}&id={$dao->contact_id_b}&advisorID={$dao->advisor_id}&ptc=1&$parent" );
       $advisorName = $dao->aac_nick_name ? $dao->aac_nick_name : $dao->aac_display_name;
-      if ($results['values'][0][$getbooking_startdate_id] <= $current_date && $results['values'][0][$getbooking_enddate_id]  >= $current_date ) {
+      if (0 && $results['values'][0][$getbooking_startdate_id] <= $current_date && $results['values'][0][$getbooking_enddate_id]  >= $current_date ) {
         $values[$dao->contact_id_b]['meeting']['title'] = "Please schedule your {$dao->subject} with {$advisorName}. Online registraton will <strong>close Nov 1st</strong>";
         $values[$dao->contact_id_b]['meeting']['edit'] = "<a href=\"{$url}\">Schedule a conference for {$dao->rcb_display_name}</a>";
       } else {

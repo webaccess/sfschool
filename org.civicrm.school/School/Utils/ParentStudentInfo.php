@@ -95,7 +95,7 @@ cp2add_civireport.geo_code_2 civicrm_address_parent2_geo_code_2
 			 'State Province' => $dao->civicrm_address_parent1_state_province_id,
 			 'Postal Code' => $dao->civicrm_address_parent1_postal_code,
 			 'Address geocode1' => $dao->civicrm_address_parent1_geo_code_1,
-			 'Address geocode2' => $dao->civicrm_address_parent1_geo_code_1
+			 'Address geocode2' => $dao->civicrm_address_parent1_geo_code_2
 			 );
       
       if (!empty($dao->civicrm_address_parent2_street_address) 
@@ -106,7 +106,7 @@ cp2add_civireport.geo_code_2 civicrm_address_parent2_geo_code_2
 			   'State Province' => $dao->civicrm_address_parent2_state_province_id,
 			   'Postal Code' => $dao->civicrm_address_parent2_postal_code,
 			   'Address geocode1' => $dao->civicrm_address_parent2_geo_code_1,
-			   'Address geocode2' => $dao->civicrm_address_parent2_geo_code_1
+			   'Address geocode2' => $dao->civicrm_address_parent2_geo_code_2
 			   );
       }
 

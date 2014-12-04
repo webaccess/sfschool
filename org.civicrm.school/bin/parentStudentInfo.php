@@ -37,8 +37,14 @@ require_once 'Utils.php';
 function run( ) {
     School_bin_Utils_auth();
 
-    require_once '../School/Utils/ParentStudentInfo.php';
+    $config =& CRM_Core_Config::singleton( );
+
+    require_once 'school.php';
+    school_civicrm_config( $config );
+
+    require_once 'School/Utils/ParentStudentInfo.php';
     $parentStudentInfo = School_Utils_ParentStudentInfo::getParentStudentInfo();
+
     echo json_encode($parentStudentInfo);
     exit;
 }

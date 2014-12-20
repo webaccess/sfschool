@@ -37,6 +37,12 @@
      <access_arguments>profile listings and forms</access_arguments>
   </item>
   <item>
+     <path>civicrm/school/familyMap</path>
+     <page_callback>School_Page_FamilyMap</page_callback>
+     <title>San Francisco School Family Map</title>
+     <access_arguments>profile listings and forms</access_arguments>
+  </item>
+  <item>
      <path>civicrm/school/extended/detail</path>
      <page_callback>School_Page_Detail</page_callback>
      <access_arguments>profile listings and forms</access_arguments>

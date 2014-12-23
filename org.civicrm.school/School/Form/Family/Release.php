@@ -36,96 +36,97 @@
 require_once 'School/Form/Family.php';
 
 class School_Form_Family_Release extends School_Form_Family {
-    function preProcess( ) {
-        parent::preProcess();
+  function preProcess( ) {
+    parent::preProcess();
 
-        require_once 'CRM/Core/BAO/CustomGroup.php';
-        $this->_schoolInfoId = CRM_Core_DAO::getFieldValue( 'CRM_Core_DAO_CustomGroup', 
-                                                            School_Form_Family::SCHOOL_INFO_TABLE, 'id', 'table_name' );
-        $groupTree = CRM_Core_BAO_CustomGroup::getTree( 'Contact',
-                                                        $this,
-                                                        $this->_studentId,
-                                                        $this->_schoolInfoId );
-        $this->_groupTree = CRM_Core_BAO_CustomGroup::formatGroupTree( $groupTree, 1, $this );
-        foreach ( $this->_groupTree as $gid => $this->_groupTree ) {
-            foreach ( $this->_groupTree['fields'] as $fid => $fieldTree ) {
-                if ( in_array($fieldTree['column_name'], array('activity_authorization',
-                                                               'handbook_authorization',
-                                                               'media_authorization',
-                                                               'ms_release_authorization')) ) {
-                    $this->_infoMapper[$fieldTree['column_name']] = $fieldTree["element_name"];
-                }
-            }
+    require_once 'CRM/Core/BAO/CustomGroup.php';
+    $this->_schoolInfoId = CRM_Core_DAO::getFieldValue( 'CRM_Core_DAO_CustomGroup',
+                           School_Form_Family::SCHOOL_INFO_TABLE, 'id', 'table_name' );
+    $groupTree = CRM_Core_BAO_CustomGroup::getTree( 'Contact',
+                 $this,
+                 $this->_studentId,
+                 $this->_schoolInfoId );
+    $this->_groupTree = CRM_Core_BAO_CustomGroup::formatGroupTree( $groupTree, 1, $this );
+    foreach ( $this->_groupTree as $gid => $this->_groupTree ) {
+      foreach ( $this->_groupTree['fields'] as $fid => $fieldTree ) {
+        if ( in_array($fieldTree['column_name'], array('activity_authorization',
+              'handbook_authorization',
+              'media_authorization',
+              'ms_release_authorization')) ) {
+          $this->_infoMapper[$fieldTree['column_name']] = $fieldTree["element_name"];
         }
+      }
+    }
+  }
+
+  function setDefaultValues( )
+  {
+    $defaults = array( );
+
+    $this->_groupTree = array( $this->_schoolInfoId => $this->_groupTree );
+    CRM_Core_BAO_CustomGroup::setDefaults( $this->_groupTree, $customDefaults );
+
+    foreach( $this->_infoMapper as $colName => $eleName ) {
+      $defaults[$colName] = $customDefaults[$eleName];
     }
 
-    function setDefaultValues( ) 
-    {
-        $defaults = array( );
+    return $defaults;
+  }
 
-        $this->_groupTree = array( $this->_schoolInfoId => $this->_groupTree );
-        CRM_Core_BAO_CustomGroup::setDefaults( $this->_groupTree, $customDefaults );
+  function buildQuickForm( ) {
+    require_once 'School/Utils/Query.php';
+    $this->add( 'checkbox', 'media_authorization', ts('Media Release'), null, false );
+    $this->add( 'checkbox', 'activity_authorization', ts('Activity Acknowledgement'), null, true );
+    $this->add( 'checkbox', 'handbook_authorization', ts('Handbook Acknowledgement'), null, true );
 
-        foreach( $this->_infoMapper as $colName => $eleName ) {
-            $defaults[$colName] = $customDefaults[$eleName];
-        }
+    $grade =  School_Utils_Query::getGrade($this->_studentId);
+    if ( intval($grade) >= 6 ) {
+      $releaseAuthorization[ ] = HTML_QuickForm::createElement('radio', null, '', '<strong>&nbsp;'.ts('I have read and agree to the statement noted above.').'</strong>', 1);
+      $releaseAuthorization[ ] = HTML_QuickForm::createElement('radio', null, '', '<strong>&nbsp;'.ts('My child is to remain on campus until picked up by an authorized adult.').'</strong>', 0);
+      $this->addGroup($releaseAuthorization, 'ms_release_authorization', '', '<br /><br />');
 
-        return $defaults;
     }
 
-    function buildQuickForm( ) {
-        require_once 'School/Utils/Query.php';
-        $this->add( 'checkbox', 'media_authorization', ts('Media Release'), null, false );
-        $this->add( 'checkbox', 'activity_authorization', ts('Activity Acknowledgement'), null, true );
-        $this->add( 'checkbox', 'handbook_authorization', ts('Handbook Acknowledgement'), null, true );
-        
-        $grade =  School_Utils_Query::getGrade($this->_studentId);
-        if ( intval($grade) >= 6 ) {
-            $releaseAuthorization[ ] = HTML_QuickForm::createElement('radio', null, '', '<strong>&nbsp;'.ts('I have read and agree to the statement noted above.').'</strong>', 1);
-            $releaseAuthorization[ ] = HTML_QuickForm::createElement('radio', null, '', '<strong>&nbsp;'.ts('My child is to remain on campus until picked up by an authorized adult.').'</strong>', 0);
-            $this->addGroup($releaseAuthorization, 'ms_release_authorization', '', '<br /><br />');
+    $buttons   = array();
 
-        }
-
-        $buttons   = array();
-
-        $className = CRM_Utils_String::getClassName( $this->_name );
-        if ( School_Form_Family_TabHeader::getNextSubPage($this, $className) != 'Household' ) {
-            $buttons[] = array ( 'type'      => 'next',
-                                 'name'      => ts('Save and Next'),
-                                 'spacing'   => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', 
-                                 'js'        => array( 'onclick' => 'return confirmClicks();') );
-        } else {
-            $buttons[] = array ( 'type'      => 'submit',
-                                 'name'      => ts('Save'),
-                                 'isDefault' => true,
-                                 'js'        => array( 'onclick' => 'return confirmClicks();') );
-        }
-        
-        $buttons[] = array ( 'type'      => 'cancel',
-                             'name'      => ts('Cancel') );
-        
-        $this->addButtons( $buttons );
+    $className = CRM_Utils_String::getClassName( $this->_name );
+    require_once 'School/Form/Family/TabHeader.php';
+    if ( School_Form_Family_TabHeader::getNextSubPage($this, $className) != 'Household' ) {
+      $buttons[] = array ( 'type'      => 'next',
+                   'name'      => ts('Save and Next'),
+                   'spacing'   => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',
+                   'js'        => array( 'onclick' => 'return confirmClicks();') );
+    } else {
+      $buttons[] = array ( 'type'      => 'submit',
+                   'name'      => ts('Save'),
+                   'isDefault' => true,
+                   'js'        => array( 'onclick' => 'return confirmClicks();') );
     }
 
-    function postProcess() 
-    {
-        require_once 'CRM/Core/BAO/CustomValueTable.php';
-        $params = $this->controller->exportValues( $this->_name );
+    $buttons[] = array ( 'type'      => 'cancel',
+                 'name'      => ts('Cancel') );
 
-        foreach( $this->_infoMapper as $colName => $elementName ) {
-            $params[$colName] = CRM_Utils_Array::value( $colName, $params, 0 );
-            $customParams[$elementName] = $params[$colName];
-        }
+    $this->addButtons( $buttons );
+  }
 
-        $customFields = 
-            CRM_Core_BAO_CustomField::getFields( 'Contact', false, false, $this->_studentId );
-        CRM_Core_BAO_CustomValueTable::postProcess( $customParams,
-                                                    $customFields,
-                                                    'civicrm_contact',
-                                                    $this->_studentId,
-                                                    'Contact' );
+  function postProcess()
+  {
+    require_once 'CRM/Core/BAO/CustomValueTable.php';
+    $params = $this->controller->exportValues( $this->_name );
 
-        parent::endPostProcess( );
+    foreach( $this->_infoMapper as $colName => $elementName ) {
+      $params[$colName] = CRM_Utils_Array::value( $colName, $params, 0 );
+      $customParams[$elementName] = $params[$colName];
     }
+
+    $customFields =
+      CRM_Core_BAO_CustomField::getFields( 'Contact', false, false, $this->_studentId );
+    CRM_Core_BAO_CustomValueTable::postProcess( $customParams,
+      $customFields,
+      'civicrm_contact',
+      $this->_studentId,
+      'Contact' );
+
+    parent::endPostProcess( );
+  }
 }

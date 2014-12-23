@@ -58,8 +58,8 @@ class School_Form_Family_Emergency extends School_Form_Family {
     $defaults = array( );
     $blockId  = 1;
     $hasSibling = false;
-    $locationTypeIds = array_flip(CRM_Core_PseudoConstant::locationType());
-    $phoneTypeIds    = array_flip(CRM_Core_PseudoConstant::phoneType());
+    $locationTypeIds = array_flip(CRM_Core_PseudoConstant::get('CRM_Core_DAO_Address', 'location_type_id'));
+    $phoneTypeIds    = array_flip(CRM_Core_PseudoConstant::get('CRM_Core_DAO_Phone', 'phone_type_id'));
 
     $relTypeParams = array(
                            'name_a_b' => 'Emergency Contact Of',

@@ -158,7 +158,7 @@ ORDER BY   c.display_name
           $query = "SELECT id
                   FROM civicrm_activity ca
                   WHERE ca.activity_date_time = %1 AND ca.id IN
-                    (SELECT activity_id FROM civicrm_activity_assignment WHERE assignee_contact_id = %2) limit 0, 1";
+                    (SELECT activity_id FROM civicrm_activity_contact WHERE contact_id = %2 AND record_type_id = 1) limit 0, 1";
           $queryParam = array(1 => array($mysqlDate, 'Timestamp'),
                         2 => array($advisor_id, 'Integer'));
           $dao = CRM_Core_DAO::executeQuery($query, $queryParam);

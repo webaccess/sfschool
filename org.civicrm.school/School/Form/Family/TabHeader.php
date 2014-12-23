@@ -49,6 +49,8 @@
         }
         $form->assign_by_ref( 'tabHeader', $tabs );
         $form->assign_by_ref( 'selectedTab', self::getCurrentTab($tabs) );
+        CRM_Core_Resources::singleton()
+          ->addScriptFile('civicrm', 'templates/CRM/common/TabHeader.js', 1, 'html-header');
         return $tabs;
     }
 
@@ -159,7 +161,7 @@
         if ( $current ) {
             return $current;
         }
-        
+
         if ( is_array($tabs) ) {
             foreach ( $tabs as $subPage => $pageVal ) {
                 if ( $pageVal['current'] === true ) {
@@ -168,7 +170,7 @@
                 }
             }
         }
-        
+
         $current = $current ? $current : 'Household';
         return $current;
     }

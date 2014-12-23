@@ -139,7 +139,7 @@
 <script type="text/javascript">
 cj(function() {
    cj(".crm-error:first").hide();
-   cj().crmaccordions();
+   cj().crmAccordions();
 });
 </script>
 {/literal}

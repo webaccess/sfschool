@@ -331,10 +331,10 @@ WHERE cc.first_name = '{$input['first_name']}' AND
     function getActivityDetails( $actTypeId, $targetContactId , $futureOnly = true ) {
         $sql = "
 SELECT at.id, at.activity_id, act.activity_date_time ,op.label
-FROM  civicrm_activity_target as at
+FROM  civicrm_activity_contact as at
 INNER JOIN civicrm_activity act ON act.activity_type_id = %1
 LEFT JOIN civicrm_option_value as op ON op.value = act.activity_type_id
-WHERE at.target_contact_id = %2 
+WHERE at.contact_id = %2 AND at.record_type_id = 3
 AND at.activity_id = act.id 
 AND op.option_group_id = %3
 ";

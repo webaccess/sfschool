@@ -146,31 +146,31 @@ class School_Report_Form_Schedule extends CRM_Report_Form {
 
         if ( $this->_params['contact_sub_type_value'] == 'Staff' ||  $this->_params['contact_sub_type_value'] == 'Teacher' ) { 
             $this->_from = "FROM
-                              civicrm_activity_assignment activity_assignment
+                              civicrm_activity_contact activity_assignment
                               INNER JOIN civicrm_contact {$this->_aliases['civicrm_contact']}
                                            ON 
-                                               {$this->_aliases['civicrm_contact']}.id = activity_assignment.assignee_contact_id
+                                               {$this->_aliases['civicrm_contact']}.id = activity_assignment.contact_id AND activity_assignment.record_type_id = 1
                                                AND {$this->_aliases['civicrm_contact']}.contact_sub_type LIKE '%".$this->_params['contact_sub_type_value']."%'
 
                               INNER  JOIN civicrm_activity {$this->_aliases['civicrm_activity']}
                                             ON 
                                               {$this->_aliases['civicrm_activity']}.id = activity_assignment.activity_id 
 
-                              INNER JOIN civicrm_activity_target activity_target 
+                              INNER JOIN civicrm_activity_contact activity_target 
                                             ON 
                                               {$this->_aliases['civicrm_activity']}.id = activity_target.activity_id
                               LEFT JOIN civicrm_contact  {$this->_aliases['civicrm_contact_other']}
                                              ON 
-                                              {$this->_aliases['civicrm_contact_other']}.id = activity_target.target_contact_id   ";
+                                              {$this->_aliases['civicrm_contact_other']}.id = activity_target.contact_id AND activity_target.record_type_id = 3   ";
         }
 
 
         if( $this->_params['contact_sub_type_value'] == 'Student' || $this->_params['contact_sub_type_value'] == 'Parent' ) {
             $this->_from = "FROM 
-                                 civicrm_activity_target activity_target
+                                 civicrm_activity_contact activity_target
                                  INNER JOIN civicrm_contact {$this->_aliases['civicrm_contact']}
                                            ON 
-                                               {$this->_aliases['civicrm_contact']}.id = activity_target.target_contact_id  
+                                               {$this->_aliases['civicrm_contact']}.id = activity_target.contact_id  AND activity_target.record_type_id = 3
                                                AND {$this->_aliases['civicrm_contact']}.contact_sub_type LIKE '%".$this->_params['contact_sub_type_value']."%'
 
                                  INNER JOIN civicrm_activity {$this->_aliases['civicrm_activity']}
@@ -178,13 +178,13 @@ class School_Report_Form_Schedule extends CRM_Report_Form {
                                               {$this->_aliases['civicrm_activity']}.id =  activity_target.activity_id 
 
 
-                                 INNER JOIN civicrm_activity_assignment activity_assignment 
+                                 INNER JOIN civicrm_activity_contact activity_assignment
                                             ON 
-                                              {$this->_aliases['civicrm_activity']}.id = activity_assignment.activity_id 
+                                              {$this->_aliases['civicrm_activity']}.id = activity_assignment.activity_id
 
                                   LEFT JOIN civicrm_contact  {$this->_aliases['civicrm_contact_other']}
                                              ON 
-                                              {$this->_aliases['civicrm_contact_other']}.id = activity_assignment.assignee_contact_id
+                                              {$this->_aliases['civicrm_contact_other']}.id = activity_assignment.contact_id AND activity_assignment.record_type_id = 1
 
  ";
 

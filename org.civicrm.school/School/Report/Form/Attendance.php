@@ -136,7 +136,7 @@ AND    term = %1
 AND   {$this->_colMapper['dayOfWeek']} = '{$this->_params['weekday_value']}'
 ORDER BY session, name, additional_rows
 ";
-        $params = array( 1 => array( School_Utils_ExtendedCare::getTerm( 'Fall 2014' ), 'String' ) );
+        $params = array( 1 => array( School_Utils_ExtendedCare::getTerm( 'Spring 2015' ), 'String' ) );
         $sname = CRM_Core_DAO::executeQuery( $sql, $params );
         $rows  = array( );
 

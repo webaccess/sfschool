@@ -2,7 +2,7 @@
 LOAD DATA INFILE '/home/lobo/svn/school/org.civicrm.school/sql/Spring2013.csv' INTO TABLE `school_extended_care_source`
 FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\n' ;
 
-LOAD DATA INFILE '/var/log/mysql/Fall2014.csv' INTO TABLE `school_extended_care_source`
+LOAD DATA INFILE '/var/log/mysql/Spring2015.csv' INTO TABLE `school_extended_care_source`
 FIELDS TERMINATED BY ',' OPTIONALLY ENCLOSED BY '"' LINES TERMINATED BY '\n' ;
 
 LOAD DATA INFILE '/Users/lobo/svn/sfschool/sql/Fall2011.csv' INTO TABLE `sfschool_extended_care_source`

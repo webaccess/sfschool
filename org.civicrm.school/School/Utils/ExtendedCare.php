@@ -47,7 +47,7 @@ class School_Utils_ExtendedCare {
     FEE_POSITION = 9,
     START_POSITION = 10,
     END_POSITION = 11,
-    TERM = 'Fall 2014',
+    TERM = 'Spring 2015',
     COORDINATOR_NAME  = 'Sarah Wood',
     COORDINATOR_EMAIL = 'swood@sfschool.org';
 

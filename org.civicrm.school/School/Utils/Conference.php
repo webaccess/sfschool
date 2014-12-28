@@ -35,7 +35,7 @@
 
 class School_Utils_Conference {
   const
-    SUBJECT  = 'Fall 2014 Parent Teacher Conference',
+    SUBJECT  = 'Spring 2015 Parent Teacher Conference',
     LOCATION = 'San Francisco School',
     STATUS   = 1;
 

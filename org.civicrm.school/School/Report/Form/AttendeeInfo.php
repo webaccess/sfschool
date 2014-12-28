@@ -55,7 +55,7 @@ class School_Report_Form_AttendeeInfo extends CRM_Report_Form {
 SELECT DISTINCT( name ) as class
 FROM   school_extended_care_source
 WHERE  is_active = 1
-AND    term = 'Fall 2014'
+AND    term = 'Spring 2015'
 ";
 
     $dao = CRM_Core_DAO::executeQuery( $sql );

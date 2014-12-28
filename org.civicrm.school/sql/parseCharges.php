@@ -59,7 +59,7 @@ function readPaymentFile( $readFile, $writeFile, $globalID ) {
     }
 
     $blocksCharged = (double ) $fields[6];
-    $details = "Fall 2014 - {$fields[3]}";
+    $details = "Spring 2015 - {$fields[3]}";
 
     $output = array(
       $globalID++,

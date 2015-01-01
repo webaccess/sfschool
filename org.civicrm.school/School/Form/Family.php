@@ -51,10 +51,12 @@ class School_Form_Family extends CRM_Core_Form {
 
   protected $_studentId;
   protected $_parentId;
+  protected $_setTab = NULL;
 
   function preProcess( ) {
     $this->_studentId = CRM_Utils_Request::retrieve( 'cid', 'Positive', $this, true, 0, 'REQUEST' );
     $this->_parentId  = CRM_Utils_Request::retrieve( 'pid', 'Positive', $this, true, 0, 'REQUEST' );
+    $this->_setTab    = CRM_Utils_Request::retrieve( 'setTab', 'Int' , $this, false, 0, 'REQUEST' );
 
     if ( $this->_studentId ) {
       // make sure _studentId is a student
@@ -105,13 +107,16 @@ class School_Form_Family extends CRM_Core_Form {
     }
 
     // set up tabs
-    require_once 'School/Form/Family/TabHeader.php';
-    School_Form_Family_TabHeader::build( $this );
+    if ($this->_setTab) {
+     require_once 'School/Form/Family/TabHeader.php';
+     School_Form_Family_TabHeader::build( $this );
+    }
   }
 
   function buildQuickForm( ) {
     $className = CRM_Utils_String::getClassName( $this->_name );
     $buttons   = array();
+     require_once 'School/Form/Family/TabHeader.php';
 
     if ( School_Form_Family_TabHeader::getNextSubPage($this, $className) != 'Household' ) {
       $buttons[] = array ( 'type'      => 'next',
@@ -132,7 +137,7 @@ class School_Form_Family extends CRM_Core_Form {
   function getTemplateFileName( ) {
     if ( $this->controller->getPrint( ) == CRM_Core_Smarty::PRINT_NOFORM ||
 	 $this->getVar( '_studentId' ) <= 0 ||
-	 ( $this->_action & CRM_Core_Action::DELETE ) ) {
+	 ( $this->_action & CRM_Core_Action::DELETE ) || !$this->_setTab) {
       return parent::getTemplateFileName( );
     } else {
       return 'CRM/common/TabHeader.tpl';
@@ -264,7 +269,7 @@ LIMIT 1
       $studentID = $this->_studentId;
     }
 
-    require_once 'api/v2/Relationship.php';
+    require_once 'api/v3/Relationship.php';
     $taskList = array( 'household'    => true,
 		       'emergency'    => true,
 		       'medical'      => true,

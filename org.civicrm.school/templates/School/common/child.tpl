@@ -12,7 +12,7 @@
 <fieldset>
 <legend>Online Forms for Family Information</legend>
 <div>
-<a href="{$childInfo.familyURL}"><strong>Submit {$childInfo.name}'s Family Information Form</strong></a>
+<a href="{$childInfo.familyURL}&setTab=1"><strong>Submit {$childInfo.name}'s Family Information Form</strong></a>
 </div>
 </fieldset>
 {if $childInfo.meeting}

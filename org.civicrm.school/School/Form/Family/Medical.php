@@ -34,7 +34,7 @@
  */
 
 require_once 'School/Form/Family.php';
-require_once 'api/v2/Relationship.php';
+require_once 'api/v3/Relationship.php';
 
 class School_Form_Family_Medical extends School_Form_Family {
 
@@ -227,6 +227,7 @@ class School_Form_Family_Medical extends School_Form_Family {
         $buttons   = array();
         
         $className = CRM_Utils_String::getClassName( $this->_name );
+        require_once 'School/Form/Family/TabHeader.php';
         if ( School_Form_Family_TabHeader::getNextSubPage($this, $className) != 'Household' ) {
             $buttons[] = array ( 'type'      => 'next',
                                  'name'      => ts('Save and Next'),

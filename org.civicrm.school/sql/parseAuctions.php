@@ -143,15 +143,15 @@ function createActivity( &$auction, &$params ) {
 
     $activity->save( );
 
-    $activityTarget = new CRM_Activity_DAO_ActivityTarget( );
-    $activityTarget->activity_id = $activity->id;
-    $activityTarget->target_contact_id = $auction['orgID'];
-    $activityTarget->save( );
-    
-    $activityAssignment = new CRM_Activity_DAO_ActivityAssignment( );
-    $activityAssignment->activity_id = $activity->id;
-    $activityAssignment->assignee_contact_id = $params['source_contact_id'];
-    $activityAssignment->save( );
+    $activityContact = new CRM_Activity_DAO_ActivityContact( );
+    $activityContact->activity_id = $activity->id;
+    $activityContact->contact_id = $auction['orgID'];
+    $activityContact->record_type_id = 3;
+    $activityContact->save( );
+
+    $activityContact->contact_id = $params['source_contact_id'];
+    $activityContact->record_type_id = 1;
+    $activityContact->save( );
 
     // now save the custom data
     $sql = "

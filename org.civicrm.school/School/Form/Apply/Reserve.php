@@ -90,13 +90,13 @@ class School_Form_Apply_Reserve extends CRM_Core_Form {
     $sql = "
 SELECT     a.id as activity_id, a.activity_date_time, a.subject, a.location
 FROM       civicrm_activity a
-INNER JOIN civicrm_activity_assignment aa ON a.id = aa.activity_id
-LEFT  JOIN civicrm_activity_target     at ON a.id = at.activity_id
+INNER JOIN civicrm_activity_contact aa ON a.id = aa.activity_id
+LEFT  JOIN civicrm_activity_contact at ON a.id = at.activity_id
 WHERE      a.activity_type_id = %1
-AND        aa.assignee_contact_id = %2 
+AND        aa.contact_id = %2 AND aa.record_type_id = 1
 AND        a.status_id = 1
 AND        a.activity_date_time > NOW()
-AND        ( at.target_contact_id IS NULL OR at.target_contact_id = %3 )
+AND        ( (at.contact_id IS NULL OR at.contact_id = %3) AND at.record_type_id = 3)
 ORDER BY   a.activity_date_time asc
 ";
        
@@ -148,8 +148,8 @@ ORDER BY   a.activity_date_time asc
     if ( $activityId && !$this->_target_id ) {
 
       $sql = "
-REPLACE INTO civicrm_activity_target (activity_id, target_contact_id)
-VALUES ( %1, %2 )";
+REPLACE INTO civicrm_activity_contact (activity_id, contact_id)
+VALUES ( %1, %2 ) ";
       $params = array( 1 => array( $activityId, 'Integer' ),
                        2 => array( $this->_targetContactId, 'Integer' ) );
       CRM_Core_DAO::executeQuery( $sql, $params );
@@ -163,8 +163,8 @@ VALUES ( %1, %2 )";
       CRM_Core_Session::setStatus(ts(' Your %1 that was scheduled at <b>%2</b> has been cancelled. You will recieve a confirmation shortly.',
                                      array( 1 => $this->_actType, 2 => $dateTime) ));
       $sql = "
-DELETE FROM civicrm_activity_target
-WHERE id = %1";
+DELETE FROM civicrm_activity_contact
+WHERE id = %1 AND record_type_id = 3";
       $params = array( 1 => array( $this->_target_id, 'Integer' ));
       CRM_Core_DAO::executeQuery( $sql, $params );
       self::sendMail( $activityId , $this->_actType , true );

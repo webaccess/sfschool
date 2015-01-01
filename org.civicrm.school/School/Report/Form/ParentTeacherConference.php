@@ -211,17 +211,17 @@ AND   (contact.contact_sub_type like '%Staff%' OR contact.contact_sub_type  li
   function from(  ) {
     $alias = $this->_aliases[$this->_customTable];
     $this->_from = "FROM
-                              civicrm_activity_assignment activity_assignment
+                              civicrm_activity_contact activity_assignment
                               INNER JOIN $this->_customTable school
-                                           ON school.entity_id = activity_assignment.assignee_contact_id
+                                           ON school.entity_id = activity_assignment.contact_id AND activity_assignment.record_type_id = 1
                               INNER JOIN civicrm_contact {$this->_aliases['civicrm_contact']}
-                                           ON {$this->_aliases['civicrm_contact']}.id = activity_assignment.assignee_contact_id  AND ({$this->_aliases['civicrm_contact']}.contact_sub_type like '%Parent%' OR {$this->_aliases['civicrm_contact']}.contact_sub_type like '%Staff%')
+                                           ON {$this->_aliases['civicrm_contact']}.id = activity_assignment.contact_id AND activity_assignment.record_type_id = 1 AND ({$this->_aliases['civicrm_contact']}.contact_sub_type like '%Parent%' OR {$this->_aliases['civicrm_contact']}.contact_sub_type like '%Staff%')
                               INNER  JOIN civicrm_activity {$this->_aliases['civicrm_activity']}
                                             ON ({$this->_aliases['civicrm_activity']}.id = activity_assignment.activity_id AND  {$this->_aliases['civicrm_activity']}.is_deleted=0 AND {$this->_aliases['civicrm_activity']}.is_test=0 AND {$this->_aliases['civicrm_activity']}.activity_type_id={$this->_actvityTypeId} )
-                              INNER JOIN civicrm_activity_target activity_target
+                              INNER JOIN civicrm_activity_contact activity_target
                                             ON {$this->_aliases['civicrm_activity']}.id = activity_target.activity_id
                               INNER JOIN civicrm_contact  {$this->_aliases['civicrm_contact_student']}
-                                            ON {$this->_aliases['civicrm_contact_student']}.id = activity_target.target_contact_id
+                                            ON {$this->_aliases['civicrm_contact_student']}.id = activity_target.contact_id AND activity_target.record_type_id = 3
                               INNER JOIN $this->_customTable {$alias}
                                             ON ({$alias}.entity_id={$this->_aliases['civicrm_contact_student']}.id AND {$this->_aliases['civicrm_contact_student']}.contact_sub_type like '%Student%')
                               LEFT JOIN civicrm_relationship relationship

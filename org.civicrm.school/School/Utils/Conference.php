@@ -62,17 +62,17 @@ class School_Utils_Conference {
     $sql = "
 SELECT     r.contact_id_b, a.id as activity_id, a.activity_date_time, a.subject, a.location, aac.display_name, aac.nick_name, aac.id as advisor_id
 FROM       civicrm_activity a
-INNER JOIN civicrm_activity_assignment aa ON a.id = aa.activity_id
-INNER JOIN civicrm_contact            aac ON aa.assignee_contact_id = aac.id
+INNER JOIN civicrm_activity_contact aa ON a.id = aa.activity_id
+INNER JOIN civicrm_contact            aac ON aa.contact_id = aac.id AND aa.record_type_id = 1
 INNER JOIN civicrm_relationship         r ON r.contact_id_a = aac.id
-LEFT  JOIN civicrm_activity_target     at ON a.id = at.activity_id
+LEFT  JOIN civicrm_activity_contact     at ON a.id = at.activity_id 
 WHERE      a.activity_type_id = %4
 AND        r.relationship_type_id = %3
 AND        r.is_active = 1
 AND        r.contact_id_b = %2
 AND        a.status_id = 1
 AND        a.activity_date_time > ADDDATE( NOW(), 1 )
-AND        ( at.target_contact_id IS NULL OR at.target_contact_id = %2 )
+AND        ( (at.contact_id IS NULL OR at.contact_id = %2 ) AND at.record_type_id = 3 )
 ORDER BY   a.activity_date_time asc
 ";
 
@@ -193,10 +193,10 @@ SELECT     a.id, a.activity_date_time, a.subject, a.location, r.contact_id_b,
            rcb.display_name as rcb_display_name,
            s.grade_sis as grade
 FROM       civicrm_activity a
-INNER JOIN civicrm_activity_assignment aa ON a.id = aa.activity_id
-INNER JOIN civicrm_activity_target     at ON a.id = at.activity_id
-INNER JOIN civicrm_contact            aac ON aa.assignee_contact_id = aac.id
-INNER JOIN civicrm_contact            aat ON at.target_contact_id   = aat.id
+INNER JOIN civicrm_activity_contact aa ON a.id = aa.activity_id
+INNER JOIN civicrm_activity_contact    at ON a.id = at.activity_id
+INNER JOIN civicrm_contact            aac ON aa.contact_id = aac.id AND aa.record_type_id = 1
+INNER JOIN civicrm_contact            aat ON at.contact_id   = aat.id AND at.record_type_id = 3
 INNER JOIN civicrm_value_school_information s ON s.entity_id = aat.id
 INNER JOIN civicrm_relationship         r ON r.contact_id_a         = aac.id
 INNER JOIN civicrm_contact            rcb ON r.contact_id_b         = rcb.id
@@ -206,8 +206,8 @@ AND        a.activity_date_time > NOW()
 AND        r.relationship_type_id = %1
 AND        r.is_active = 1
 AND        r.contact_id_b IN ( $childrenIDString )
-AND        aa.assignee_contact_id = r.contact_id_a
-AND        at.target_contact_id = r.contact_id_b;
+AND        aa.contact_id = r.contact_id_a
+AND        at.contact_id = r.contact_id_b;
 ";
 
     $parent = null;
@@ -252,10 +252,10 @@ SELECT     a.id, r.contact_id_b, a.subject, a.location,
            rcb.display_name as rcb_display_name,
            s.grade_sis as grade
 FROM       civicrm_activity a
-INNER JOIN civicrm_activity_assignment aa ON a.id = aa.activity_id
-INNER JOIN civicrm_contact            aac ON aa.assignee_contact_id = aac.id
+INNER JOIN civicrm_activity_contact aa ON a.id = aa.activity_id
+INNER JOIN civicrm_contact            aac ON aa.contact_id = aac.id AND aa.record_type_id = 1
 INNER JOIN civicrm_relationship         r ON r.contact_id_a = aac.id
-LEFT  JOIN civicrm_activity_target     at ON a.id = at.activity_id
+LEFT  JOIN civicrm_activity_contact     at ON a.id = at.activity_id
 INNER JOIN civicrm_contact            rcb ON r.contact_id_b = rcb.id
 INNER JOIN civicrm_value_school_information s ON s.entity_id = rcb.id
 WHERE      a.activity_type_id = %2
@@ -264,7 +264,7 @@ AND        r.is_active = 1
 AND        r.contact_id_b IN ($childrenIDString)
 AND        a.status_id = 1
 AND        a.activity_date_time > NOW()
-AND        at.target_contact_id IS NULL
+AND        at.contact_id IS NULL AND at.record_type_id = 3
 GROUP BY r.contact_id_b
 ";
 
@@ -537,7 +537,7 @@ GROUP BY r.contact_id_b
     require_once 'CRM/Activity/DAO/ActivityAssignment.php';
     $assignment = new CRM_Activity_DAO_ActivityAssignment( );
     $assignment->activity_id = $activity->id;
-    $assignment->assignee_contact_id = $teacherID;
+    $assignment->contact_id = $teacherID;
     $assignment->save( );
 
     /* for saving custom values of activity */
@@ -561,15 +561,16 @@ GROUP BY r.contact_id_b
   static function deleteAll( $childID ) {
     $sql = "
 UPDATE     civicrm_activity a,
-           civicrm_activity_assignment aa,
-           civicrm_activity_target     at
+           civicrm_activity_contact aa,
+           civicrm_activity_contact     at
 SET        a.phone_number = NULL
 WHERE      a.activity_type_id = %2
 AND        a.id = aa.activity_id
 AND        a.id = at.activity_id
 AND        a.status_id = 1
 AND        a.activity_date_time > NOW()
-AND        at.target_contact_id = %1
+AND        at.contact_id = %1
+AND        at.record_type_id = 3
 ";
     $params  = array( 1 => array( $childID , 'Integer' ),
                2 => array( self::getConferenceActTypeId( ) , 'Integer' ) );
@@ -578,14 +579,15 @@ AND        at.target_contact_id = %1
     $sql = "
 DELETE     at.*
 FROM       civicrm_activity a,
-           civicrm_activity_assignment aa,
-           civicrm_activity_target     at
+           civicrm_activity_contact aa,
+           civicrm_activity_contact     at
 WHERE      a.activity_type_id = %2
 AND        a.id = aa.activity_id
 AND        a.id = at.activity_id
 AND        a.status_id = 1
 AND        a.activity_date_time > NOW()
-AND        at.target_contact_id = %1
+AND        at.contact_id = %1
+AND        at.record_type_id = 3
 ";
     $dao = CRM_Core_DAO::executeQuery( $sql, $params );
   }
@@ -596,13 +598,13 @@ AND        at.target_contact_id = %1
     $sql = "
 SELECT     c.display_name as advisorName, s.grade_sis as grade
 FROM       civicrm_activity a,
-           civicrm_activity_assignment aa,
-           civicrm_activity_target     at,
+           civicrm_activity_contact aa,
+           civicrm_activity_contact     at,
            civicrm_contact             c ,
            civicrm_value_school_information s
 WHERE      a.activity_type_id = %1
-AND        aa.assignee_contact_id = c.id
-AND        s.entity_id = at.target_contact_id
+AND        aa.contact_id = c.id AND aa.record_type_id = 1
+AND        s.entity_id = at.contact_id AND at.record_type_id = 3
 AND        a.status_id = 1
 AND        aa.activity_id = a.id
 AND        at.activity_id = a.id
@@ -625,12 +627,12 @@ ORDER BY   s.grade_sis
   static function sendReminderEmail( $days = 1 ) {
     $sql = "
 SELECT     a.id, a.activity_date_time,
-           aa.assignee_contact_id as advisor_id,
-           at.target_contact_id   as child_id
+           aa.contact_id as advisor_id,
+           at.contact_id   as child_id
 FROM       civicrm_activity a
-INNER JOIN civicrm_activity_assignment aa ON aa.activity_id = a.id
-INNER JOIN civicrm_activity_target     at ON at.activity_id = a.id
-INNER JOIN civicrm_value_school_information s ON s.entity_id = at.target_contact_id
+INNER JOIN civicrm_activity_contact aa ON aa.activity_id = a.id
+INNER JOIN civicrm_activity_contact     at ON at.activity_id = a.id
+INNER JOIN civicrm_value_school_information s ON s.entity_id = at.contact_id AND at.record_type_id = 3
 WHERE      a.activity_type_id = %1
 AND        a.status_id = 1
 AND        DATE_FORMAT(a.activity_date_time,'%Y-%m-%d') = CURDATE() + INTERVAL %2 DAY
@@ -653,11 +655,11 @@ AND        s.grade_sis <= 5
 SELECT     c.id, c.display_name, a.id as activity_id, a.activity_date_time, at.id as target_id
 FROM       civicrm_contact c
 INNER JOIN civicrm_relationship r ON c.id = r.contact_id_b
-INNER JOIN civicrm_activity_assignment aa ON aa.assignee_contact_id = %1
+INNER JOIN civicrm_activity_contact aa ON aa.contact_id = %1 AND aa.record_type_id = 1
 INNER JOIN civicrm_activity a ON a.id = aa.activity_id
-INNER JOIN civicrm_activity_target at ON at.target_contact_id = c.id AND at.activity_id = a.id
+INNER JOIN civicrm_activity_contact at ON at.contact_id = c.id AND at.activity_id = a.id AND at.record_type_id = 3
 WHERE      r.contact_id_a = %1
-AND        aa.assignee_contact_id = %1
+AND        aa.contact_id = %1
 AND        r.relationship_type_id = %2
 AND        a.status_id = 1
 ORDER BY   a.activity_date_time
@@ -681,17 +683,17 @@ ORDER BY   a.activity_date_time
     $sql = "
 SELECT     a.id as activity_id, a.activity_date_time
 FROM       civicrm_activity a
-INNER JOIN civicrm_activity_assignment aa ON a.id = aa.activity_id
-INNER JOIN civicrm_contact            aac ON aa.assignee_contact_id = aac.id
+INNER JOIN civicrm_activity_contact aa ON a.id = aa.activity_id
+INNER JOIN civicrm_contact            aac ON aa.contact_id = aac.id AND aa.record_type_id = 1
 INNER JOIN civicrm_relationship         r ON r.contact_id_a = aac.id
-LEFT  JOIN civicrm_activity_target     at ON a.id = at.activity_id
+LEFT  JOIN civicrm_activity_contact     at ON a.id = at.activity_id
 WHERE      a.activity_type_id = %3
 AND        r.relationship_type_id = %2
 AND        r.is_active = 1
 AND        r.contact_id_a = %1
 AND        a.status_id = 1
 AND        a.activity_date_time > NOW()
-AND        ( at.target_contact_id IS NULL OR at.target_contact_id = %1 )
+AND        ( ( at.contact_id IS NULL OR at.contact_id = %1 ) AND at.record_type_id = 3 )
 ORDER BY   a.activity_date_time asc
 ";
     $params  = array( 1 => array( $teacherID   , 'Integer' ),
@@ -851,9 +853,9 @@ ORDER BY c.display_name
     $sql = "
 DELETE     a.*, aa.*
 FROM       civicrm_activity a
-INNER JOIN civicrm_activity_assignment aa ON a.id = aa.activity_id
+INNER JOIN civicrm_activity_contact aa ON a.id = aa.activity_id
 WHERE      a.id = %1
-AND        aa.assignee_contact_id = %2
+AND        aa.contact_id = %2
 ";
     $params = array( 1 => array( $activityID, 'Integer' ),
               2 => array( $advisorID , 'Integer' ) );
@@ -880,7 +882,7 @@ AND        aa.assignee_contact_id = %2
     // we actually need to lock this and then ensure the space is available
     // lets do that at a later stage
     $sql = "
-REPLACE INTO civicrm_activity_target (activity_id, target_contact_id)
+REPLACE INTO civicrm_activity_contact (activity_id, contact_id)
 VALUES
 ( %1, %2 )
 ";

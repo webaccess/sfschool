@@ -336,7 +336,7 @@ GROUP BY r.contact_id_b
     }
     // perform validation on the parameters
     require_once 'CRM/Activity/DAO/Activity.php';
-    require_once 'CRM/Activity/DAO/ActivityAssignment.php';
+    require_once 'CRM/Activity/DAO/ActivityContact.php';
 
     if ( $params ) {
       self::createConference( $adminID, $teacherID,
@@ -534,9 +534,11 @@ GROUP BY r.contact_id_b
     $activity->location           = $location;
     $activity->save( );
 
-    require_once 'CRM/Activity/DAO/ActivityAssignment.php';
-    $assignment = new CRM_Activity_DAO_ActivityAssignment( );
+    require_once 'CRM/Activity/DAO/ActivityContact.php';
+    $activityRecordTypes = CRM_Core_OptionGroup::values('activity_contacts', TRUE, FALSE, FALSE, NULL, 'name');
+    $assignment = new CRM_Activity_DAO_ActivityContact( );
     $assignment->activity_id = $activity->id;
+    $assignment->record_type_id = $activityRecordTypes['Activity Source'];
     $assignment->contact_id = $teacherID;
     $assignment->save( );
 

@@ -229,7 +229,7 @@ ORDER BY   c.display_name
     }
 
     require_once 'CRM/Core/Session.php';
-    CRM_Core_Session::setStatus( "We created {$totalSlots} conference entries" );
+    CRM_Core_Session::setStatus( "We created {$totalSlots} conference entries" , ts('Parent Teacher Conference created'), 'success');
   }
 
 }

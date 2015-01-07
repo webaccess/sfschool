@@ -112,8 +112,7 @@ AND        ( is_deleted = 0 OR is_deleted IS NULL )
 
 function createActivities( &$auctions ) {
     require_once 'CRM/Activity/DAO/Activity.php';
-    require_once 'CRM/Activity/DAO/ActivityTarget.php';
-    require_once 'CRM/Activity/DAO/ActivityAssignment.php';
+    require_once 'CRM/Activity/DAO/ActivityContact.php';
     
     $params = array(
                     'source_contact_id'  => 745,

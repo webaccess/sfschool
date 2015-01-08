@@ -261,7 +261,7 @@ FROM       civicrm_activity a
 INNER JOIN civicrm_activity_contact aa ON a.id = aa.activity_id AND aa.record_type_id = 1
 INNER JOIN civicrm_contact            aac ON aa.contact_id = aac.id
 INNER JOIN civicrm_relationship       r ON r.contact_id_a = aac.id
-INNER JOIN civicrm_activity_contact   at ON a.id = at.activity_id AND at.record_type_id = 3
+LEFT JOIN civicrm_activity_contact   at ON a.id = at.activity_id AND at.record_type_id = 3
 INNER JOIN civicrm_contact            rcb ON r.contact_id_b = rcb.id
 INNER JOIN civicrm_value_school_information s ON s.entity_id = rcb.id
 WHERE      a.activity_type_id = %2

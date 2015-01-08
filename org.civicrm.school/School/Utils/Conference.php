@@ -62,22 +62,26 @@ class School_Utils_Conference {
     $sql = "
 SELECT     r.contact_id_b, a.id as activity_id, a.activity_date_time, a.subject, a.location, aac.display_name, aac.nick_name, aac.id as advisor_id
 FROM       civicrm_activity a
-INNER JOIN civicrm_activity_contact aa ON a.id = aa.activity_id
-INNER JOIN civicrm_contact            aac ON aa.contact_id = aac.id AND aa.record_type_id = 1
-INNER JOIN civicrm_relationship         r ON r.contact_id_a = aac.id
-LEFT  JOIN civicrm_activity_contact     at ON a.id = at.activity_id 
+INNER JOIN civicrm_activity_contact aa ON a.id = aa.activity_id AND aa.record_type_id = 1
+INNER JOIN civicrm_contact            aac ON aa.contact_id = aac.id
+INNER JOIN civicrm_relationship       r ON r.contact_id_a = aac.id
 WHERE      a.activity_type_id = %4
 AND        r.relationship_type_id = %3
 AND        r.is_active = 1
 AND        r.contact_id_b = %2
 AND        a.status_id = 1
 AND        a.activity_date_time > ADDDATE( NOW(), 1 )
-AND        ( (at.contact_id IS NULL OR at.contact_id = %2 ) AND at.record_type_id = 3 )
+AND        a.id NOT IN (
+SELECT ca1.id 
+FROM civicrm_activity ca1 INNER JOIN civicrm_activity_contact cac1 ON (cac1.activity_id = ca1.id AND cac1.record_type_id = 3)
+WHERE ca1.status_id=1 AND ca1.activity_type_id=%4
+)
 ORDER BY   a.activity_date_time asc
 ";
 
     $params  = array(
       2 => array( $childID   , 'Integer' ),
+      5 => array( $advisorID   , 'Integer' ),
       3 => array( self::getAdvisorRelTypeId( ), 'Integer' ),
       4 => array( self::getConferenceActTypeId( ) , 'Integer' )
     );
@@ -98,7 +102,7 @@ ORDER BY   a.activity_date_time asc
       $form->assign('cancelURL', $url);
       $sess->pushUserContext( $url );
     }
-
+    
     if ( ! empty( $elements ) ) {
       $form->addElement( 'select', 'school_activity_id', "Choose a Meeting time for {$dao->subject}", $elements, true );
 
@@ -184,7 +188,7 @@ ORDER BY   a.activity_date_time asc
     }
 
     $childrenIDString = implode( ',', array_values( $childrenIDs ) );
-
+    
     // find first all scheduled meetings in the future
     $sql = "
 SELECT     a.id, a.activity_date_time, a.subject, a.location, r.contact_id_b,
@@ -192,9 +196,10 @@ SELECT     a.id, a.activity_date_time, a.subject, a.location, r.contact_id_b,
            rcb.display_name as rcb_display_name,
            s.grade_sis as grade
 FROM       civicrm_activity a
-INNER JOIN civicrm_activity_contact aa ON a.id = aa.activity_id
+INNER JOIN civicrm_activity_contact aa ON a.id = aa.activity_id AND aa.record_type_id = 1 
+INNER JOIN civicrm_activity_contact at ON a.id = at.activity_id AND at.record_type_id = 3 
 INNER JOIN civicrm_contact            aac ON aa.contact_id = aac.id
-INNER JOIN civicrm_contact            aat ON aa.contact_id   = aat.id
+INNER JOIN civicrm_contact            aat ON at.contact_id   = aat.id
 INNER JOIN civicrm_value_school_information s ON s.entity_id = aat.id
 INNER JOIN civicrm_relationship         r ON r.contact_id_a         = aac.id
 INNER JOIN civicrm_contact            rcb ON r.contact_id_b         = rcb.id
@@ -204,8 +209,8 @@ AND        a.activity_date_time > NOW()
 AND        r.relationship_type_id = %1
 AND        r.is_active = 1
 AND        r.contact_id_b IN ( $childrenIDString )
-AND        aa.contact_id IN (r.contact_id_a, r.contact_id_b)
-
+AND        aa.contact_id = r.contact_id_a
+AND        at.contact_id = r.contact_id_b
 ";
 
     $parent = null;
@@ -215,6 +220,7 @@ AND        aa.contact_id IN (r.contact_id_a, r.contact_id_b)
     $params = array( 1 => array( self::getAdvisorRelTypeId(), 'Integer' ),
               2 => array( self::getConferenceActTypeId( ) , 'Integer' ) );
     $dao = CRM_Core_DAO::executeQuery( $sql, $params );
+
     while ( $dao->fetch( ) ) {
       $url = CRM_Utils_System::url( 'civicrm/profile/edit', "reset=1&gid={$gidStudent}&id={$dao->contact_id_b}&advisorID={$dao->advisor_id}&ptc=1&$parent" );
       $dateTime = CRM_Utils_Date::customFormat( $dao->activity_date_time,
@@ -226,14 +232,16 @@ AND        aa.contact_id IN (r.contact_id_a, r.contact_id_b)
         $values[$dao->contact_id_b]['meeting']['edit']  = "<a href=\"{$url}\">Modify conference time for {$dao->rcb_display_name}</a>";
       }
       $values[$dao->contact_id_b]['meeting']['id']    = $dao->id;
+      /*
       // FIXME when we have access to the web :)
-    /*  $newChildrenIDs = array( );
+      $newChildrenIDs = array( );
       foreach ( $childrenIDs as $childID ) {
         if ( $dao->contact_id_b != $childID ) {
           $newChildrenIDs[] = $childID;
         }
       }
-      $childrenIDs = $newChildrenIDs;*/
+      $childrenIDs = $newChildrenIDs;
+      */
     }
 
     // check if other children left to schedule a meeting
@@ -250,10 +258,10 @@ SELECT     a.id, r.contact_id_b, a.subject, a.location,
            rcb.display_name as rcb_display_name,
            s.grade_sis as grade
 FROM       civicrm_activity a
-INNER JOIN civicrm_activity_contact aa ON a.id = aa.activity_id
-INNER JOIN civicrm_contact            aac ON aa.contact_id = aac.id AND aa.record_type_id = 2
-INNER JOIN civicrm_relationship         r ON r.contact_id_a = aac.id
-LEFT  JOIN civicrm_activity_contact     at ON a.id = at.activity_id
+INNER JOIN civicrm_activity_contact aa ON a.id = aa.activity_id AND aa.record_type_id = 1
+INNER JOIN civicrm_contact            aac ON aa.contact_id = aac.id
+INNER JOIN civicrm_relationship       r ON r.contact_id_a = aac.id
+INNER JOIN civicrm_activity_contact   at ON a.id = at.activity_id AND at.record_type_id = 3
 INNER JOIN civicrm_contact            rcb ON r.contact_id_b = rcb.id
 INNER JOIN civicrm_value_school_information s ON s.entity_id = rcb.id
 WHERE      a.activity_type_id = %2
@@ -282,7 +290,7 @@ GROUP BY r.contact_id_b
       $results = civicrm_api( "Activity","get", $bookingParams );
       $url = CRM_Utils_System::url( 'civicrm/profile/edit', "reset=1&gid={$gidStudent}&id={$dao->contact_id_b}&advisorID={$dao->advisor_id}&ptc=1&$parent" );
       $advisorName = $dao->aac_nick_name ? $dao->aac_nick_name : $dao->aac_display_name;
-      $endDate = CRM_Utils_Date::customFormat($results['values'][0][$getbooking_enddate_id], '%b %e%f');
+      $endDate = CRM_Utils_Date::customFormat(CRM_Utils_Date::processDate($results['values'][0][$getbooking_enddate_id]), '%b %e%f');
       if ($results['values'][0][$getbooking_startdate_id] <= $current_date && $results['values'][0][$getbooking_enddate_id]  >= $current_date ) {
         $values[$dao->contact_id_b]['meeting']['title'] = "Please schedule your {$dao->subject} with {$advisorName}. Online registraton will <strong>close ".$endDate."</strong>";
         $values[$dao->contact_id_b]['meeting']['edit'] = "<a href=\"{$url}\">Schedule a conference for {$dao->rcb_display_name}</a>";
@@ -533,9 +541,18 @@ GROUP BY r.contact_id_b
 
     require_once 'CRM/Activity/DAO/ActivityContact.php';
     $activityRecordTypes = CRM_Core_OptionGroup::values('activity_contacts', TRUE, FALSE, FALSE, NULL, 'name');
+    
+    // create record for conference creator	
+    $sourceContact = new CRM_Activity_DAO_ActivityContact( );
+    $sourceContact->activity_id = $activity->id;
+    $sourceContact->record_type_id = $activityRecordTypes['Activity Source'];
+    $sourceContact->contact_id = $adminID;
+    $sourceContact->save( );
+
+    // create record for teacher	
     $assignment = new CRM_Activity_DAO_ActivityContact( );
     $assignment->activity_id = $activity->id;
-    $assignment->record_type_id = $activityRecordTypes['Activity Source'];
+    $assignment->record_type_id = $activityRecordTypes['Activity Assignees'];
     $assignment->contact_id = $teacherID;
     $assignment->save( );
 
@@ -881,9 +898,9 @@ AND        aa.contact_id = %2
     // we actually need to lock this and then ensure the space is available
     // lets do that at a later stage
     $sql = "
-REPLACE INTO civicrm_activity_contact (activity_id, contact_id)
+REPLACE INTO civicrm_activity_contact (activity_id, contact_id, record_type_id)
 VALUES
-( %1, %2 )
+( %1, %2, 3)
 ";
     $params = array( 1 => array( $activityID, 'Integer' ),
               2 => array( $childID   , 'Integer' ) );

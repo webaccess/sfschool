@@ -90,13 +90,15 @@ class School_Form_Apply_Reserve extends CRM_Core_Form {
     $sql = "
 SELECT     a.id as activity_id, a.activity_date_time, a.subject, a.location
 FROM       civicrm_activity a
-INNER JOIN civicrm_activity_contact aa ON a.id = aa.activity_id
+INNER JOIN civicrm_activity_contact aa ON a.id = aa.activity_id 
+	AND aa.record_type_id = 1
 LEFT  JOIN civicrm_activity_contact at ON a.id = at.activity_id
+	AND at.record_type_id = 3
 WHERE      a.activity_type_id = %1
-AND        aa.contact_id = %2 AND aa.record_type_id = 1
+AND        aa.contact_id = %2 
 AND        a.status_id = 1
 AND        a.activity_date_time > NOW()
-AND        ( (at.contact_id IS NULL OR at.contact_id = %3) AND at.record_type_id = 3)
+AND        at.contact_id = %3
 ORDER BY   a.activity_date_time asc
 ";
        
@@ -146,10 +148,9 @@ ORDER BY   a.activity_date_time asc
     require_once 'CRM/Core/PseudoConstant.php';
    		
     if ( $activityId && !$this->_target_id ) {
-
       $sql = "
-REPLACE INTO civicrm_activity_contact (activity_id, contact_id)
-VALUES ( %1, %2 ) ";
+REPLACE INTO civicrm_activity_contact (activity_id, contact_id, record_type_id)
+VALUES ( %1, %2, 3) ";
       $params = array( 1 => array( $activityId, 'Integer' ),
                        2 => array( $this->_targetContactId, 'Integer' ) );
       CRM_Core_DAO::executeQuery( $sql, $params );

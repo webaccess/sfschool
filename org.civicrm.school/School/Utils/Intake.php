@@ -111,8 +111,7 @@ AND    ( ( r.relationship_type_id = 1  AND r.contact_id_a = c.id AND r.contact_i
             $sess =& CRM_Core_Session::singleton( );
             $url  =  CRM_Utils_System::url( 'civicrm/profile/view',
                                             "reset=1&gid=$gidParent&id=$parentID" );
-            $form->removeElement( 'cancelURL' );
-            $form->add( 'hidden', 'cancelURL', $url );
+            $form->assign('cancelURL', $url);
             $sess->pushUserContext( $url );
         }
 

@@ -95,8 +95,7 @@ ORDER BY   a.activity_date_time asc
       $sess =& CRM_Core_Session::singleton( );
       $url  =  CRM_Utils_System::url( 'civicrm/profile/view',
                "reset=1&gid={$gidParent}&id=$parentID" );
-      $form->removeElement( 'cancelURL' );
-      $form->add( 'hidden', 'cancelURL', $url );
+      $form->assign('cancelURL', $url);
       $sess->pushUserContext( $url );
     }
 
@@ -194,9 +193,8 @@ SELECT     a.id, a.activity_date_time, a.subject, a.location, r.contact_id_b,
            s.grade_sis as grade
 FROM       civicrm_activity a
 INNER JOIN civicrm_activity_contact aa ON a.id = aa.activity_id
-INNER JOIN civicrm_activity_contact    at ON a.id = at.activity_id
-INNER JOIN civicrm_contact            aac ON aa.contact_id = aac.id AND aa.record_type_id = 1
-INNER JOIN civicrm_contact            aat ON at.contact_id   = aat.id AND at.record_type_id = 3
+INNER JOIN civicrm_contact            aac ON aa.contact_id = aac.id
+INNER JOIN civicrm_contact            aat ON aa.contact_id   = aat.id
 INNER JOIN civicrm_value_school_information s ON s.entity_id = aat.id
 INNER JOIN civicrm_relationship         r ON r.contact_id_a         = aac.id
 INNER JOIN civicrm_contact            rcb ON r.contact_id_b         = rcb.id
@@ -206,8 +204,8 @@ AND        a.activity_date_time > NOW()
 AND        r.relationship_type_id = %1
 AND        r.is_active = 1
 AND        r.contact_id_b IN ( $childrenIDString )
-AND        aa.contact_id = r.contact_id_a
-AND        at.contact_id = r.contact_id_b;
+AND        aa.contact_id IN (r.contact_id_a, r.contact_id_b)
+
 ";
 
     $parent = null;
@@ -229,13 +227,13 @@ AND        at.contact_id = r.contact_id_b;
       }
       $values[$dao->contact_id_b]['meeting']['id']    = $dao->id;
       // FIXME when we have access to the web :)
-      $newChildrenIDs = array( );
+    /*  $newChildrenIDs = array( );
       foreach ( $childrenIDs as $childID ) {
         if ( $dao->contact_id_b != $childID ) {
           $newChildrenIDs[] = $childID;
         }
       }
-      $childrenIDs = $newChildrenIDs;
+      $childrenIDs = $newChildrenIDs;*/
     }
 
     // check if other children left to schedule a meeting
@@ -253,7 +251,7 @@ SELECT     a.id, r.contact_id_b, a.subject, a.location,
            s.grade_sis as grade
 FROM       civicrm_activity a
 INNER JOIN civicrm_activity_contact aa ON a.id = aa.activity_id
-INNER JOIN civicrm_contact            aac ON aa.contact_id = aac.id AND aa.record_type_id = 1
+INNER JOIN civicrm_contact            aac ON aa.contact_id = aac.id AND aa.record_type_id = 2
 INNER JOIN civicrm_relationship         r ON r.contact_id_a = aac.id
 LEFT  JOIN civicrm_activity_contact     at ON a.id = at.activity_id
 INNER JOIN civicrm_contact            rcb ON r.contact_id_b = rcb.id
@@ -264,7 +262,6 @@ AND        r.is_active = 1
 AND        r.contact_id_b IN ($childrenIDString)
 AND        a.status_id = 1
 AND        a.activity_date_time > NOW()
-AND        at.contact_id IS NULL AND at.record_type_id = 3
 GROUP BY r.contact_id_b
 ";
 
@@ -285,7 +282,7 @@ GROUP BY r.contact_id_b
       $results = civicrm_api( "Activity","get", $bookingParams );
       $url = CRM_Utils_System::url( 'civicrm/profile/edit', "reset=1&gid={$gidStudent}&id={$dao->contact_id_b}&advisorID={$dao->advisor_id}&ptc=1&$parent" );
       $advisorName = $dao->aac_nick_name ? $dao->aac_nick_name : $dao->aac_display_name;
-      $endDate = CRM_Utils_Date::customFormat($results['values'][0][$getbooking_enddate_id], '%b %d%, %Y');
+      $endDate = CRM_Utils_Date::customFormat($results['values'][0][$getbooking_enddate_id], '%b %e%f');
       if ($results['values'][0][$getbooking_startdate_id] <= $current_date && $results['values'][0][$getbooking_enddate_id]  >= $current_date ) {
         $values[$dao->contact_id_b]['meeting']['title'] = "Please schedule your {$dao->subject} with {$advisorName}. Online registraton will <strong>close ".$endDate."</strong>";
         $values[$dao->contact_id_b]['meeting']['edit'] = "<a href=\"{$url}\">Schedule a conference for {$dao->rcb_display_name}</a>";

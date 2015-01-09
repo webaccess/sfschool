@@ -74,7 +74,7 @@ AND        a.activity_date_time > ADDDATE( NOW(), 1 )
 AND        a.id NOT IN (
 SELECT ca1.id 
 FROM civicrm_activity ca1 INNER JOIN civicrm_activity_contact cac1 ON (cac1.activity_id = ca1.id AND cac1.record_type_id = 3)
-WHERE ca1.status_id=1 AND ca1.activity_type_id=%4
+WHERE ca1.status_id=1 AND ca1.activity_type_id=%4 AND cac1.contact_id != %2
 )
 ORDER BY   a.activity_date_time asc
 ";

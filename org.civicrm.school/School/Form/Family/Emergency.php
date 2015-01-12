@@ -271,8 +271,8 @@ AND        f.column_name = %1
     $qParams  = array( 1 => array( $this->_emergencyTableCol, 'String' ) );
     $fieldId  = CRM_Core_DAO::singleValueQuery( $sql, $qParams );
 
-    $locationTypeIds = array_flip(CRM_Core_PseudoConstant::locationType());
-    $phoneTypeIds    = array_flip(CRM_Core_PseudoConstant::phoneType());
+    $locationTypeIds = array_flip(CRM_Core_PseudoConstant::get('CRM_Core_DAO_Address', 'location_type_id'));
+    $phoneTypeIds    = array_flip(CRM_Core_PseudoConstant::get('CRM_Core_DAO_Phone', 'phone_type_id'));
 
     for ( $blockId = 1; $blockId <= self::BLOCK_NUM; $blockId++ ) {
       if ( !empty($params['ec_contact'][$blockId]['first_name']) ||

@@ -245,8 +245,8 @@ class School_Form_Family_Household extends School_Form_Family {
     require_once 'CRM/Dedupe/Finder.php';
     require_once 'School/Utils/Query.php';
 
-    $locationTypeIds = array_flip(CRM_Core_PseudoConstant::locationType());
-    $phoneTypeIds    = array_flip(CRM_Core_PseudoConstant::phoneType());
+    $locationTypeIds = array_flip(CRM_Core_PseudoConstant::get('CRM_Core_DAO_Address', 'location_type_id'));
+    $phoneTypeIds    = array_flip(CRM_Core_PseudoConstant::get('CRM_Core_DAO_Phone', 'phone_type_id'));
 
     for ( $blockId = 1; $blockId <= self::BLOCK_NUM; $blockId++ ) {
       if ( !empty($params['contact'][$blockId]['first_name']) ||
@@ -433,7 +433,7 @@ class School_Form_Family_Household extends School_Form_Family {
     }
 
     // send mail on changing address
-    require_once 'CRM/Core/BAO/MessageTemplates.php';
+    require_once 'CRM/Core/BAO/MessageTemplate.php';
     require_once 'CRM/Core/PseudoConstant.php';
     if( !empty( $contactIds ) ) {
       foreach( $contactIds as $key => $id ) {

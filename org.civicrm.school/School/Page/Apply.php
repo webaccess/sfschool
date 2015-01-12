@@ -42,9 +42,9 @@ class School_Page_Apply extends CRM_Core_Page {
         require_once 'api/v2/Relationship.php';
         
 
-        $phoneTypes         = CRM_Core_PseudoConstant::phoneType();
-        $locationTypes      = CRM_Core_PseudoConstant::locationType();
-        $gender             = CRM_Core_PseudoConstant::gender();
+        $phoneTypes         = CRM_Core_PseudoConstant::get('CRM_Core_DAO_Phone', 'phone_type_id');
+        $locationTypes      = CRM_Core_PseudoConstant::get('CRM_Core_DAO_Address', 'location_type_id');
+        $gender             = CRM_Core_PseudoConstant::get('CRM_Contact_DAO_Contact', 'gender_id');
         $this->_applicantId = CRM_Utils_Request::retrieve( 'cid', 'Positive', $this, true, 0, 'REQUEST' );
 
         $session = CRM_Core_Session::singleton();

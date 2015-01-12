@@ -103,8 +103,8 @@ class School_Form_Apply_Family extends School_Form_Apply {
         $defaults = array();
         $defaults = $this->_defaults;
        
-        $locationTypeIds = array_flip(CRM_Core_PseudoConstant::locationType());
-        $phoneTypeIds    = array_flip(CRM_Core_PseudoConstant::phoneType());
+        $locationTypeIds = array_flip(CRM_Core_PseudoConstant::get('CRM_Core_DAO_Address', 'location_type_id'));
+        $phoneTypeIds    = array_flip(CRM_Core_PseudoConstant::get('CRM_Core_DAO_Phone', 'phone_type_id'));
 
         $blockId = 0;    
         $relTypeParams = array(
@@ -314,8 +314,8 @@ class School_Form_Apply_Family extends School_Form_Apply {
         
         require_once 'CRM/Dedupe/Finder.php';
         
-        $locationTypeIds = array_flip(CRM_Core_PseudoConstant::locationType());
-        $phoneTypeIds    = array_flip(CRM_Core_PseudoConstant::phoneType());
+        $locationTypeIds = array_flip(CRM_Core_PseudoConstant::get('CRM_Core_DAO_Address', 'location_type_id'));
+        $phoneTypeIds    = array_flip(CRM_Core_PseudoConstant::get('CRM_Core_DAO_Phone', 'phone_type_id'));
         
         for ( $blockId = 1; $blockId <= self::BLOCK_NUM; $blockId++ ) {
             if ( !empty($params['contact'][$blockId]['first_name']) ||

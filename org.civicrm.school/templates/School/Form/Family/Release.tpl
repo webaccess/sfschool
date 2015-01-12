@@ -144,5 +144,7 @@ function confirmClicks( ) {
   return true;	
 }
 
+var tab = 'li#tab_Release';
+CRM.tabHeader.focus(tab);
 </script>
 {/literal}

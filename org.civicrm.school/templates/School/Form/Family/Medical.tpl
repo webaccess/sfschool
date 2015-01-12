@@ -206,5 +206,8 @@ function confirmClicks( ) {
   return true;
 }
 
+var tab = 'li#tab_Medical';
+CRM.tabHeader.focus(tab);
+
 </script>
 {/literal}

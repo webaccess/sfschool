@@ -113,7 +113,7 @@
 
                {if $parentIDs.$parentNum}
                   <tr>
-                     <td><a class="button" href="javascript:popUp('{crmURL p='civicrm/profile/edit' q="reset=1&gid=$parentProfileID&snippet=2&id=`$parentIDs.$parentNum`"}')"><span>Edit Driver Information</span></a></td>
+                     <td><a class="button" href="{crmURL p='civicrm/profile/edit' q="reset=1&gid=$parentProfileID&snippet=2&id=`$parentIDs.$parentNum`"}"><span>Edit Driver Information</span></a></td>
                   </tr>
                {/if}
              </table>

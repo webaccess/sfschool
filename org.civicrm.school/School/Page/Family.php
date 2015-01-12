@@ -43,10 +43,10 @@ class School_Page_Family extends CRM_Core_Page {
 
   function commonRun( $studentID ) {
     require_once 'School/Form/Family.php';
-    require_once 'api/v2/Relationship.php';
+    require_once 'api/v3/Relationship.php';
 
-    $this->_phoneTypes    = CRM_Core_PseudoConstant::phoneType();
-    $this->_locationTypes = CRM_Core_PseudoConstant::locationType();
+    $this->_phoneTypes    = CRM_Core_PseudoConstant::get('CRM_Core_DAO_Phone', 'phone_type_id');
+    $this->_locationTypes = CRM_Core_PseudoConstant::get('CRM_Core_DAO_Address', 'location_type_id');
 
     $this->_studentId = $studentID;
 

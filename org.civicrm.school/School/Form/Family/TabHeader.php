@@ -39,139 +39,123 @@
  */
 
 
- class School_Form_Family_TabHeader {
+class School_Form_Family_TabHeader {
 
-    static function build( &$form ) {
-        $tabs = $form->get( 'tabHeader' );
-        if ( !$tabs || !CRM_Utils_Array::value('reset', $_GET) ) {
-            $tabs =& self::process( $form );
-            $form->set( 'tabHeader', $tabs );
-        }
-        $form->assign_by_ref( 'tabHeader', $tabs );
-        $form->assign_by_ref( 'selectedTab', self::getCurrentTab($tabs) );
-        CRM_Core_Resources::singleton()
-          ->addScriptFile('civicrm', 'templates/CRM/common/TabHeader.js', 1, 'html-header');
-        return $tabs;
+  static function build( &$form ) {
+    $tabs = $form->get( 'tabHeader' );
+    if ( !$tabs || !CRM_Utils_Array::value('reset', $_GET) ) {
+      $tabs =& self::process( $form );
+      $form->set( 'tabHeader', $tabs );
+    }
+    $form->assign_by_ref( 'tabHeader', $tabs );
+    $form->assign_by_ref( 'selectedTab', self::getCurrentTab($tabs) );
+
+    CRM_Core_Resources::singleton()
+      ->addScriptFile('civicrm', 'templates/CRM/common/TabHeader.js', 1, 'html-header');
+    return $tabs;
+  }
+
+  static function process( &$form ) {
+
+    if ( $form->getVar( '_studentId' ) <= 0 ) {
+      return null;
     }
 
-    static function process( &$form ) {
-        if ( $form->getVar( '_studentId' ) <= 0 ) {
-            return null;
-        }
+    $default = array(
+                     'link' => NULL,
+                     'valid' => TRUE,
+                     'active' => TRUE,
+                     'current' => FALSE,
+                     'class' => 'ajaxForm',
+                     );
 
-        $tabs = array(
-                      'Household'        => array( 'title'  => ts( 'Household Info' ),
-                                                   'link'   => null,
-                                                   'valid'  => false,
-                                                   'active' => false,
-                                                   'current' => false,
-                                                   ),
-                      'Emergency'        => array( 'title' => ts( 'Emergency ' ),
-                                                   'link'   => null,
-                                                   'valid' => false,
-                                                   'active' => false,
-                                                   'current' => false,
-                                                   ),
-                      'Medical'          => array( 'title' => ts( 'Medical ' ),
-                                                   'link'   => null,
-                                                   'valid' => false,
-                                                   'active' => false,
-                                                   'current' => false,
-                                                   ),
-                      'Release'          => array( 'title' => ts( 'Releases' ),
-                                                   'link'   => null,
-                                                   'valid' => false,
-                                                   'active' => false,
-                                                   'current' => false,
-                                                   ),
-                      'Diversity'        => array( 'title' => ts( 'Student Diversity' ),
-                                                   'link'   => null,
-                                                   'valid' => false,
-                                                   'active' => false,
-                                                   'current' => false,
-                                                   ),
-                      );
+    $tabs = array();
+    $tabs['Household'] = array('title' => ts('Household Info'), 'class' => 'ajaxForm livePage') + $default;
+    $tabs['Emergency'] = array('title' => ts('Emergency '), 'class' => 'ajaxForm livePage') + $default;
+    $tabs['Medical'] = array('title' => ts('Medical '), 'class' => 'ajaxForm livePage') + $default;
+    $tabs['Release'] = array('title' => ts('Releases'), 'class' => 'ajaxForm livePage') + $default;
+    $tabs['Diversity'] = array('title' => ts('Student Diversity'), 'class' => 'ajaxForm livePage') + $default;
 
-        $studentId = $form->getVar( '_studentId' );
-        $parentId  = $form->getVar( '_parentId' );
-        $fullName  = $form->getVar( '_name' );
-        $className = CRM_Utils_String::getClassName( $fullName );
+    $studentId = $form->getVar( '_studentId' );
+    $parentId  = $form->getVar( '_parentId' );
+    $fullName  = $form->getVar( '_name' );
+    $className = CRM_Utils_String::getClassName( $fullName );
 
-        if ( array_key_exists( $className, $tabs ) ) {
-            $tabs[$className]['current'] = true;
-        }
-
-        $enabledTabs = CRM_Core_BAO_Persistent::getContext( 'school family config', 'tabs' );
-        if ( ! empty( $enabledTabs ) ) {
-            foreach ( $tabs as $key => $value ) {
-                if ( ! in_array($key, $enabledTabs) ) {
-                    unset($tabs[$key]);
-                }
-            }
-        }
-
-        if ( $studentId ) {
-            $reset = CRM_Utils_Array::value('reset', $_GET) ? 'reset=1&' : '';
-            $qfKey = empty($reset) ? "&qfKey={$form->controller->_key}" : '';
-
-            foreach ( $tabs as $key => $value ) {
-                $tabs[$key]['link'] = CRM_Utils_System::url( 'civicrm/school/family/' . strtolower($key),
-                                                             "{$reset}snippet=4&cid={$studentId}&pid={$parentId}{$qfKey}" );
-                $tabs[$key]['active'] = $tabs[$key]['valid'] = true;
-            }
-        }
-
-        return $tabs;
+    if ( array_key_exists( $className, $tabs ) ) {
+      $tabs[$className]['current'] = true;
     }
 
-    static function reset( &$form ) {
-        $tabs =& self::process( $form );
-        $form->set( 'tabHeader', $tabs );
+    $enabledTabs = CRM_Core_BAO_Persistent::getContext( 'school family config', 'tabs' );
+    if ( ! empty( $enabledTabs ) ) {
+      foreach ( $tabs as $key => $value ) {
+        if ( ! in_array($key, $enabledTabs) ) {
+          unset($tabs[$key]);
+        }
+      }
     }
 
-    static function getNextSubPage( $form, $currentSubPage = 'Household' ) {
-        $tabs = self::build( $form );
-        $flag = false;
+    if ( $studentId ) {
+      $reset = CRM_Utils_Array::value('reset', $_GET) ? 'reset=1&' : '';
+      $qfKey = empty($reset) ? "&qfKey={$form->controller->_key}" : '';
 
-        if ( is_array($tabs) ) {
-            foreach ( $tabs as $subPage => $pageVal ) {
-                if ( $flag && $pageVal['valid'] ) {
-                    return $subPage;
-                }
-                if ( $subPage == $currentSubPage ) {
-                    $flag = true;
-                }
-            }
-        }
-        return 'Household';
+      foreach ( $tabs as $key => $value ) {
+        $tabs[$key]['link'] = CRM_Utils_System::url( 'civicrm/school/family/' . strtolower($key),
+                                                     "{$reset}snippet=4&cid={$studentId}&pid={$parentId}{$qfKey}" );
+        $tabs[$key]['active'] = $tabs[$key]['valid'] = true;
+      }
     }
 
-    static function getSubPageInfo( $form, $subPage, $info = 'title' ) {
-        $tabs = self::build( $form );
+    return $tabs;
+  }
 
-        if ( is_array($tabs[$subPage]) && array_key_exists($info, $tabs[$subPage]) ) {
-            return $tabs[$subPage][$info];
+  static function reset( &$form ) {
+    $tabs =& self::process( $form );
+    $form->set( 'tabHeader', $tabs );
+  }
+
+  static function getNextSubPage( $form, $currentSubPage = 'Household' ) {
+    $tabs = self::build( $form );
+    $flag = false;
+
+    if ( is_array($tabs) ) {
+      foreach ( $tabs as $subPage => $pageVal ) {
+        if ( $flag && $pageVal['valid'] ) {
+          return $subPage;
         }
-        return false;
+        if ( $subPage == $currentSubPage ) {
+          $flag = true;
+        }
+      }
+    }
+    return 'Household';
+  }
+
+  static function getSubPageInfo( $form, $subPage, $info = 'title' ) {
+    $tabs = self::build( $form );
+
+    if ( is_array($tabs[$subPage]) && array_key_exists($info, $tabs[$subPage]) ) {
+      return $tabs[$subPage][$info];
+    }
+    return false;
+  }
+
+  static function getCurrentTab( $tabs ) {
+    static $current = false;
+
+    if ( $current ) {
+      return $current;
     }
 
-    static function getCurrentTab( $tabs ) {
-        static $current = false;
-
-        if ( $current ) {
-            return $current;
+    if ( is_array($tabs) ) {
+      foreach ( $tabs as $subPage => $pageVal ) {
+        if ( $pageVal['current'] === true ) {
+          $current = $subPage;
+          break;
         }
-
-        if ( is_array($tabs) ) {
-            foreach ( $tabs as $subPage => $pageVal ) {
-                if ( $pageVal['current'] === true ) {
-                    $current = $subPage;
-                    break;
-                }
-            }
-        }
-
-        $current = $current ? $current : 'Household';
-        return $current;
+      }
     }
+    $current = $current ? $current : 'Household';
+
+    return $current;
+  }
 }

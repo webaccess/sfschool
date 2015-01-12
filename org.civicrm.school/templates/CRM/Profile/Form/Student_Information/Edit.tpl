@@ -193,7 +193,8 @@ Extended Day Fees are generally charged whenever a student is at school before 8
 
 {if $mode eq 4 OR $mode eq 8}
 <div class="crm-submit-buttons"> 
-     {$form.buttons.html}
+     {include file="CRM/common/formButtons.tpl"}{if $isDuplicate}<span class="crm-button">{$form._qf_Edit_upload_duplicate.html}</span>{/if}
+     <a class="button cancel" href="{$cancelURL}">{ts}Cancel{/ts}</a>
 </div>
 {/if}
      {if $help_post && $action neq 4}<br /><div class="messages help">{$help_post}</div>{/if}

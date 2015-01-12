@@ -58,3 +58,9 @@
 {/section}
 
 {include file="School/Form/Family/Buttons.tpl"}
+
+
+<script>
+var tab = 'li#tab_Emergency';
+CRM.tabHeader.focus(tab);
+</script>

@@ -81,5 +81,7 @@ function toggleSection( ele, hideElement ) {
   }
 } 
 
+var tab = 'li#tab_Diversity';
+CRM.tabHeader.focus(tab);
 </script>
-{/literal} 
+{/literal}

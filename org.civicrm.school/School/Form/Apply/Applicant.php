@@ -131,7 +131,7 @@ class School_Form_Apply_Applicant extends School_Form_Apply {
         $this->add( 'text', 'last_name', ts('Applicants Last Name:') ,'',true);
         $this->add( 'text', 'nick_name', ts('Prefered Name/Nickname:') );
         $this->add( 'select', 'gender_id', ts('Gender:') ,array( '' => ts( '- select -' ) ) +
-                    CRM_Core_PseudoConstant::gender( ), true ); 
+                    CRM_Core_PseudoConstant::get('CRM_Contact_DAO_Contact', 'gender_id'), true );
 
         //get name/value pair for grades
         $params = 'grade_20090727222519';

@@ -175,7 +175,7 @@ class School_Form_Apply_Additional extends School_Form_Apply {
             } else {
                 CRM_Core_Session::setStatus(ts('Congratulations! You\'ve successfully completed your application for %1.
                                                 At any time, you can edit your Application for %2 from your Dashboard.', 
-                                               array ( 1 => $applicantDisplayName, 2 => $applicantEdit )));
+                                               array ( 1 => $applicantDisplayName, 2 => $applicantEdit )), 'success');
             }
         }
         $redirectUrl = CRM_Utils_System::url( 'civicrm/school/apply', "reset=1" );

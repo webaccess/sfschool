@@ -157,12 +157,12 @@ VALUES ( %1, %2, 3) ";
       $dateTime = CRM_Core_DAO::getFieldValue( 'CRM_Activity_DAO_Activity',  $activityId, 'activity_date_time', 'id' );
       $scheduledTime = CRM_Utils_Date::customFormat( $dateTime, "%l:%M %P on %b %E%f");
       CRM_Core_Session::setStatus(ts(' Your %1 has been scheduled at <b>%2</b>. You will recieve a confirmation shortly.',
-                                     array( 1 => $this->_actType , 2 =>  $scheduledTime) ));
+                                     array( 1 => $this->_actType , 2 =>  $scheduledTime) ), 'success');
       self::sendMail( $activityId , $this->_actType );            
     } else if( $this->_target_id ) { 
       $dateTime = CRM_Utils_Date::customFormat( $this->_activity_date_time, "%l:%M %P on %b %E%f" );
       CRM_Core_Session::setStatus(ts(' Your %1 that was scheduled at <b>%2</b> has been cancelled. You will recieve a confirmation shortly.',
-                                     array( 1 => $this->_actType, 2 => $dateTime) ));
+                                     array( 1 => $this->_actType, 2 => $dateTime) ), 'success');
       $sql = "
 DELETE FROM civicrm_activity_contact
 WHERE id = %1 AND record_type_id = 3";

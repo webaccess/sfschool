@@ -1,5 +1,4 @@
 {* Profile forms when embedded in CMS account create (mode=1) or edit (mode=8) pages *}
-<script type="text/javascript" src="{$config->resourceBase}js/Common.js"></script>
 {if ! empty( $fields )}
 {* wrap in crm-container div so crm styles are used *}
 <div id="crm-container" lang="{$config->lcMessages|truncate:2:"":true}" xml:lang="{$config->lcMessages|truncate:2:"":true}">

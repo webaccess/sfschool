@@ -213,7 +213,7 @@ class School_Form_Class extends CRM_Core_Form
                 $queryParams = array( 1 => array( $this->_indexID, 'Integer' ) );
                 $sql = "UPDATE school_extended_care_source SET is_active=0 WHERE id=%1";
                 CRM_Core_DAO::executeQuery( $sql, $queryParams );
-                CRM_Core_Session::setStatus( ts('Class has been has been Disabled.') );
+                CRM_Core_Session::setStatus( ts('Class has been has been Disabled.'), ts('Class Disabled'),'info');
                 
                 //update student Data
                 $curentDate = date('Y-m-d');
@@ -231,7 +231,7 @@ class School_Form_Class extends CRM_Core_Form
 		/* exit; */
                 $sql         = "UPDATE school_extended_care_source SET is_active=1 WHERE id=%1";
                 CRM_Core_DAO::executeQuery( $sql, $queryParams );
-                CRM_Core_Session::setStatus( ts('Class has been has been Enabled.') );
+                CRM_Core_Session::setStatus( ts('Class has been has been Enabled.'), ts('Class Enabled'), 'info');
                 
                 //update student Data
                 $query = "UPDATE civicrm_value_extended_care {$student_class} 
@@ -290,7 +290,7 @@ class School_Form_Class extends CRM_Core_Form
                 }
 
                 CRM_Core_DAO::executeQuery( $sql, $queryParams );
-                CRM_Core_Session::setStatus( $statusMsg );
+                CRM_Core_Session::setStatus( $statusMsg,ts('Class Edited'), 'success');
             }
         } 
         CRM_Utils_System::redirect( CRM_Utils_System::url('civicrm/school/extended/class', "reset=1") );

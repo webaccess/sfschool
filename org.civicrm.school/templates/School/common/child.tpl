@@ -56,7 +56,7 @@
 {/if}
 <div>
 <br/>
-<a href="http://sfschool.org/drupal/civicrm/school/extended/class?reset=1">Extended Care Program Schedule and Details</a>
+<a href="http://192.168.2.127/drupal/civicrm/school/extended/class?reset=1">Extended Care Program Schedule and Details</a>
 </div>
 </fieldset>
 {/if}

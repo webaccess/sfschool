@@ -141,5 +141,7 @@ cj(function() {
    cj(".crm-error:first").hide();
    cj().crmAccordions();
 });
+var tab = 'li#tab_Household';
+CRM.tabHeader.focus(tab);
 </script>
 {/literal}

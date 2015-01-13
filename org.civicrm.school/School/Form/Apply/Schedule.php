@@ -176,7 +176,7 @@ class School_Form_Apply_Schedule extends CRM_Core_Form {
             $displayName = CRM_Contact_BAO_Contact::displayName( $cid );
             $contactURl = "<a href = $url>$displayName</a>";
             CRM_Core_Session::setStatus( ts(' Slots have been added for %1 You may view these slots in Activity Tab of %2', 
-                                            array( 1 => $activityName, 2 => $contactURl ) ) );
+                                            array( 1 => $activityName, 2 => $contactURl ) ) , 'success');
         }
     }
 }

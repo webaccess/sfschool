@@ -219,11 +219,11 @@ class School_Form_ExtendedCare extends CRM_Core_Form
              } elseif ( $this->_action & CRM_Core_Action::ADD ) {
                  $query     = "INSERT INTO {$this->_tableName} SET " . implode( ' , ', $updateData ) ;
                  $params    = array( );
-                 $statusMsg = ts(" %1 has been added successfuly.", array( 1 => $statusRef) ); 
+                 $statusMsg = ts(" %1 has been added successfully.", array( 1 => $statusRef) );
              }
          }
   
          CRM_Core_DAO::executeQuery( $query, $params );
-         CRM_Core_Session::setStatus( $statusMsg );
+         CRM_Core_Session::setStatus( $statusMsg,ts('Updated'), 'success');
      }      
 }

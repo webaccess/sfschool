@@ -119,9 +119,11 @@ class School_Form_Family extends CRM_Core_Form {
      require_once 'School/Form/Family/TabHeader.php';
 
     if ( School_Form_Family_TabHeader::getNextSubPage($this, $className) != 'Household' ) {
-      $buttons[] = array ( 'type'      => 'next',
+      $buttons[] = array ( 'type'      => 'submit',
 			   'name'      => ts('Save and Next'),
-			   'spacing'   => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',  );
+			   'spacing'   => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',
+			   'subName' => 'savenext',
+			   );
     } else {
       $buttons[] = array ( 'type'      => 'submit',
 			   'name'      => ts('Save'),
@@ -168,12 +170,13 @@ WHERE  entity_id = %3
 
     $title = School_Form_Family_TabHeader::getSubPageInfo( $this, $className );
     CRM_Core_Session::setStatus( ts( 'Your %1 information has been saved.',
-				     array( 1 => $title ) ) );
+				     array( 1 => $title ) ), ts('%1 information', array( 1 => $title )), 'success');
 
-    if ( $this->controller->getButtonName('submit') == "_qf_{$className}_next" ) {
-      $nextTab = School_Form_Family_TabHeader::getNextSubPage( $this, $className );
+    $nextTab = School_Form_Family_TabHeader::getNextSubPage( $this, $className );
+
+    if ( $this->controller->getButtonName('submit') == "_qf_{$className }_submit_savenext" ) {
       $nextUrl = CRM_Utils_System::url( 'civicrm/school/family/' . strtolower($nextTab),
-					"reset=1&cid={$this->_studentId}&pid={$this->_parentId}" );
+					"reset=1&cid={$this->_studentId}&pid={$this->_parentId}&setTab=1" );
       CRM_Utils_System::redirect( $nextUrl );
     } else if ( $className == 'Diversity' ) {
       $displayName = CRM_Contact_BAO_Contact::displayName( $this->_studentId );
@@ -186,7 +189,7 @@ WHERE  entity_id = %3
 	$session->setStatus( ts( "Thank you for completing the Family Information Online Forms.
 Please note, you may access your account at any time to update or edit your records through the Parent Portal.<br />At any time, you can edit your %1 for %2 from your Parent Portal",
 				 array( 1 => "<a href='{$familyUrl}'>Family Information</a>",
-					2 => $displayName ) ) );
+					2 => $displayName ) ),'success' );
 	CRM_Utils_System::redirect( CRM_Utils_System::url('civicrm/school/family/complete',
 							  "reset=1&cid={$this->_studentId}&pid={$this->_parentId}") );
       }
@@ -384,4 +387,3 @@ LIMIT 1
     return $query;
   }
 }
-

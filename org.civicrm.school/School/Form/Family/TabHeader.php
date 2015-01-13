@@ -48,10 +48,13 @@ class School_Form_Family_TabHeader {
       $form->set( 'tabHeader', $tabs );
     }
     $form->assign_by_ref( 'tabHeader', $tabs );
-    $form->assign_by_ref( 'selectedTab', self::getCurrentTab($tabs) );
 
     CRM_Core_Resources::singleton()
-      ->addScriptFile('civicrm', 'templates/CRM/common/TabHeader.js', 1, 'html-header');
+      ->addScriptFile('civicrm', 'templates/CRM/common/TabHeader.js', 1, 'html-header')
+      ->addSetting(array('tabSettings' => array(
+        'active' => self::getCurrentTab($tabs),
+      )));
+
     return $tabs;
   }
 
@@ -66,15 +69,14 @@ class School_Form_Family_TabHeader {
                      'valid' => TRUE,
                      'active' => TRUE,
                      'current' => FALSE,
-                     'class' => 'ajaxForm',
                      );
 
     $tabs = array();
-    $tabs['Household'] = array('title' => ts('Household Info'), 'class' => 'ajaxForm livePage') + $default;
-    $tabs['Emergency'] = array('title' => ts('Emergency '), 'class' => 'ajaxForm livePage') + $default;
-    $tabs['Medical'] = array('title' => ts('Medical '), 'class' => 'ajaxForm livePage') + $default;
-    $tabs['Release'] = array('title' => ts('Releases'), 'class' => 'ajaxForm livePage') + $default;
-    $tabs['Diversity'] = array('title' => ts('Student Diversity'), 'class' => 'ajaxForm livePage') + $default;
+    $tabs['Household'] = array('title' => ts('Household Info'), 'class' => 'livePage') + $default;
+    $tabs['Emergency'] = array('title' => ts('Emergency '), 'class' => 'livePage') + $default;
+    $tabs['Medical'] = array('title' => ts('Medical '), 'class' => 'livePage') + $default;
+    $tabs['Release'] = array('title' => ts('Releases'), 'class' => 'livePage') + $default;
+    $tabs['Diversity'] = array('title' => ts('Student Diversity'), 'class' => 'livePage') + $default;
 
     $studentId = $form->getVar( '_studentId' );
     $parentId  = $form->getVar( '_parentId' );
@@ -83,6 +85,10 @@ class School_Form_Family_TabHeader {
 
     if ( array_key_exists( $className, $tabs ) ) {
       $tabs[$className]['current'] = true;
+      $qfKey = $form->get('qfKey');
+      if ($qfKey) {
+        $tabs[$className]['qfKey'] = "&qfKey={$qfKey}";
+      }
     }
 
     $enabledTabs = CRM_Core_BAO_Persistent::getContext( 'school family config', 'tabs' );
@@ -96,11 +102,14 @@ class School_Form_Family_TabHeader {
 
     if ( $studentId ) {
       $reset = CRM_Utils_Array::value('reset', $_GET) ? 'reset=1&' : '';
-      $qfKey = empty($reset) ? "&qfKey={$form->controller->_key}" : '';
 
       foreach ( $tabs as $key => $value ) {
+        if (!isset($tabs[$key]['qfKey'])) {
+          $tabs[$key]['qfKey'] = NULL;
+        }
+
         $tabs[$key]['link'] = CRM_Utils_System::url( 'civicrm/school/family/' . strtolower($key),
-                                                     "{$reset}snippet=4&cid={$studentId}&pid={$parentId}{$qfKey}" );
+                                                     "{$reset}snippet=4&cid={$studentId}&pid={$parentId}{$tabs[$key]['qfKey']}" );
         $tabs[$key]['active'] = $tabs[$key]['valid'] = true;
       }
     }

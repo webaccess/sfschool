@@ -96,7 +96,7 @@ class School_Form_Family_Release extends School_Form_Family {
                    'name'      => ts('Save and Next'),
                    'spacing'   => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;',
                    'js'        => array( 'onclick' => 'return confirmClicks();'),
-                   'subName' => 'savenext')`;
+                   'subName' => 'savenext');
     } else {
       $buttons[] = array ( 'type'      => 'submit',
                    'name'      => ts('Save'),

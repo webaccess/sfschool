@@ -1,7 +1,7 @@
 {* Profile forms when embedded in CMS account create (mode=1) or edit (mode=8) pages *}
 {if ! empty( $fields )}
 {* wrap in crm-container div so crm styles are used *}
-<div id="crm-container" lang="{$config->lcMessages|truncate:2:"":true}" xml:lang="{$config->lcMessages|truncate:2:"":true}">
+<div id="crm-container" class="crm-container crm-public" lang="{$config->lcMessages|truncate:2:"":true}" xml:lang="{$config->lcMessages|truncate:2:"":true}">
 
     {if $mode eq 8 || $mode eq 1}
         {include file="CRM/Form/body.tpl"}
@@ -13,6 +13,13 @@
     {/if}
 
     {include file="CRM/common/CMSUser.tpl"}
+
+    {if $action eq 2 and $multiRecordFieldListing}
+      <h1>{ts}Edit Details{/ts}</h1>
+      <div class="crm-submit-buttons" style='float:right'>
+      {include file="CRM/common/formButtons.tpl"}{if $isDuplicate}<span class="crm-button">{$form._qf_Edit_upload_duplicate.html}</span>{/if}
+      </div>
+    {/if}
 
     {assign var=zeroField value="Initial Non Existent Fieldset"}
     {assign var=fieldset  value=$zeroField}
@@ -226,7 +233,7 @@
 {include file="CRM/Profile/Form/Parent_Information/Vehicle_Policy.tpl"}
 
 {if $mode eq 4 OR $mode eq 8}
-<div class="crm-submit-buttons">
+<div class="crm-submit-buttons" style='{$floatStyle}'>
      {$form.buttons.html}{if $isDuplicate}&nbsp;&nbsp;{$form._qf_Edit_upload_duplicate.html}{/if}
 </div>
 {/if}
@@ -239,15 +246,17 @@
   {if $drupalCms}
   {literal}
     if ( document.getElementsByName("cms_create_account")[0].checked ) {
-       show('details');
+       cj('#details').show();
     } else {
-       hide('details');
+       cj('#details').hide();
     }
   {/literal}
   {/if}
 </script>
 {/if} {* fields array is not empty *}
-
+{if $multiRecordFieldListing and empty($fields)}
+  {include file="CRM/Profile/Page/MultipleRecordFieldsListing.tpl" showListing=true}
+{/if}
 {if $drupalCms}
 {include file="CRM/common/showHideByFieldValue.tpl"
 trigger_field_id    ="create_account"
@@ -272,12 +281,12 @@ invert              = 0
 <script type="text/javascript">
     function showGreeting() {
        if( document.getElementById("greeting_type").value == 4 ) {
-           show('customGreeting');
+            cj('#customGreeting').show();
        } else {
-           hide('customGreeting');
+            cj('#customGreeting').hide();
        }
     }
-cj(document).ready(function(){
+CRM.$(function($) {
 	cj('#selector tr:even').addClass('odd-row ');
 	cj('#selector tr:odd ').addClass('even-row');
 });

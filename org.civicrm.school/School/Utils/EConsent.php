@@ -293,7 +293,7 @@ ORDER BY   grade_sis, c.id
     $currentName     = null;
     $parentNames     = array( );
     $dao = CRM_Core_DAO::executeQuery( $sql );
-    require_once 'api/v2/Relationship.php';
+    require_once 'api/v3/Relationship.php';
 
     while ( $dao->fetch( ) ) {
       if ( $dao->student_id != $currentEntityID &&

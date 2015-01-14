@@ -109,7 +109,7 @@ class School_Form_Family_TabHeader {
         }
 
         $tabs[$key]['link'] = CRM_Utils_System::url( 'civicrm/school/family/' . strtolower($key),
-                                                     "{$reset}snippet=4&cid={$studentId}&pid={$parentId}{$tabs[$key]['qfKey']}" );
+                                                     "{$reset}cid={$studentId}&pid={$parentId}{$tabs[$key]['qfKey']}" );
         $tabs[$key]['active'] = $tabs[$key]['valid'] = true;
       }
     }

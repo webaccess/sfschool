@@ -39,7 +39,7 @@ class School_Page_Apply extends CRM_Core_Page {
     function run( ) {
         require_once 'School/Form/Apply.php';
         require_once 'School/Form/Family.php';
-        require_once 'api/v2/Relationship.php';
+        require_once 'api/v3/Relationship.php';
         
 
         $phoneTypes         = CRM_Core_PseudoConstant::get('CRM_Core_DAO_Phone', 'phone_type_id');

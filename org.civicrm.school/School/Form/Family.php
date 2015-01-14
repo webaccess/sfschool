@@ -116,8 +116,11 @@ class School_Form_Family extends CRM_Core_Form {
   function buildQuickForm( ) {
     $className = CRM_Utils_String::getClassName( $this->_name );
     $buttons   = array();
-     require_once 'School/Form/Family/TabHeader.php';
+    $gidStudent = CRM_Core_DAO::getFieldValue( 'CRM_Core_DAO_UFGroup', 'Student_Information', 'id', 'name' );
+    $session = CRM_Core_Session::singleton();
+    $session->pushUserContext(CRM_Utils_System::url('civicrm/profile/view', "reset=1&id={$this->_studentId}&gid={$gidStudent}"));
 
+    require_once 'School/Form/Family/TabHeader.php';
     if ( School_Form_Family_TabHeader::getNextSubPage($this, $className) != 'Household' ) {
       $buttons[] = array ( 'type'      => 'submit',
 			   'name'      => ts('Save and Next'),
@@ -189,7 +192,7 @@ WHERE  entity_id = %3
 	$session->setStatus( ts( "Thank you for completing the Family Information Online Forms.
 Please note, you may access your account at any time to update or edit your records through the Parent Portal.<br />At any time, you can edit your %1 for %2 from your Parent Portal",
 				 array( 1 => "<a href='{$familyUrl}'>Family Information</a>",
-					2 => $displayName ) ),'success' );
+					2 => $displayName ) ),ts('Family Information Saved'), 'success' );
 	CRM_Utils_System::redirect( CRM_Utils_System::url('civicrm/school/family/complete',
 							  "reset=1&cid={$this->_studentId}&pid={$this->_parentId}") );
       }

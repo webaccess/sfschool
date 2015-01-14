@@ -346,7 +346,7 @@ function createStudent( &$student ) {
                  'custom_24'           => 'Regular',
   );
 
-  require_once 'api/v2/Contact.php';
+  require_once 'api/v3/Contact.php';
   civicrm_contact_create( $contactData );
 }
 
@@ -373,7 +373,7 @@ AND        ( ( s.subtype = 'Parent' ) OR ( s.subtype = 'Staff' ) )
                    'custom_1'            => 'Parent',
     );
 
-    require_once 'api/v2/Contact.php';
+    require_once 'api/v3/Contact.php';
     $result = civicrm_contact_create( $contactData );
     $parentID = $result['contact_id'];
   } else {

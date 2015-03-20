@@ -229,10 +229,11 @@ class School_Form_Family_Medical extends School_Form_Family {
         $className = CRM_Utils_String::getClassName( $this->_name );
         require_once 'School/Form/Family/TabHeader.php';
         if ( School_Form_Family_TabHeader::getNextSubPage($this, $className) != 'Household' ) {
-            $buttons[] = array ( 'type'      => 'next',
+            $buttons[] = array ( 'type'      => 'submit',
                                  'name'      => ts('Save and Next'),
                                  'spacing'   => '&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;', 
-                                 'js'        => array( 'onclick' => 'return confirmClicks();') );
+                                 'js'        => array( 'onclick' => 'return confirmClicks();'),
+				 'subName' => 'savenext');
         } else {
             $buttons[] = array ( 'type'      => 'submit',
                                  'name'      => ts('Save'),

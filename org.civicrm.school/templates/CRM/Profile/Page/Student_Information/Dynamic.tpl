@@ -1,6 +1,6 @@
 {if ! empty( $row )} 
 {* wrap in crm-container div so crm styles are used *}
-<div id="crm-container" lang="{$config->lcMessages|truncate:2:"":true}" xml:lang="{$config->lcMessages|truncate:2:"":true}">
+<div id="crm-container" class="crm-container" lang="{$config->lcMessages|truncate:2:"":true}" xml:lang="{$config->lcMessages|truncate:2:"":true}">
 <fieldset>
 <table class="form-layout-compressed">
 {assign var=fName value="First Name"}

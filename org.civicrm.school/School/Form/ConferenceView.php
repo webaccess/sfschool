@@ -142,6 +142,6 @@ class School_Form_ConferenceView extends CRM_Core_Form {
     $advisor = civicrm_api("Contact","getvalue", array (version => '3','sequential' =>'1', 'contact_id' =>$this->_tid, 'return' =>'display_name'));
     $sql = "DELETE FROM civicrm_activity WHERE id IN (".implode(", ", $this->_activityId).")";
     CRM_Core_DAO::executeQuery( $sql );    	
-    CRM_Core_Session::setStatus( "All conferences deleted for {$advisor}", "info");
+    CRM_Core_Session::setStatus( "All conferences deleted for {$advisor}",ts('Conferences Deleted'),"info");
   }
 }

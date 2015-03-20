@@ -69,7 +69,7 @@ class School_Form_ConferenceReminder extends CRM_Core_Form {
         School_Utils_Conference::sendReminderEmail( );
         
         require_once 'CRM/Core/Session.php';
-        CRM_Core_Session::setStatus( "Reminder emails have been sent to all the parents", 'success');
+        CRM_Core_Session::setStatus( "Reminder emails have been sent to all the parents",ts('Reminder Sent') ,'success');
 
         CRM_Utils_System::redirect( CRM_Utils_System::url( 'civicrm/dashboard',
                                                            'reset=1' ) );

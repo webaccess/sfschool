@@ -206,6 +206,7 @@ class School_Form_ExtendedCare extends CRM_Core_Form
                  }
                  
                  if( $value ) {
+                     $value = mysql_real_escape_string($value);
                      $updateData[] = $field ."="."'{$value}'";
                  } else {
                      $updateData[] = $field ."= null";
